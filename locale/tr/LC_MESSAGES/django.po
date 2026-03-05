@@ -1,0 +1,342 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0\n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "MySurvey Admin"
+msgstr "MySurvey Admin"
+
+msgid "Welcome"
+msgstr "Hoş geldin"
+
+msgid "View Site"
+msgstr "Siteyi gör"
+
+msgid "Change Password"
+msgstr "Şifre değiştir"
+
+msgid "Log out"
+msgstr "Çıkış yap"
+
+msgid "Are you sure you want to delete all recent actions?"
+msgstr "Tüm son işlemler silinsin mi?"
+
+msgid "Clear All"
+msgstr "Tümünü temizle"
+
+msgid "Delete"
+msgstr "Sil"
+
+msgid "survey"
+msgstr "Anket"
+
+msgid "surveys"
+msgstr "Anketler"
+
+msgid "polls"
+msgstr "Anketler"
+
+msgid "question"
+msgstr "Soru"
+
+msgid "questions"
+msgstr "Sorular"
+
+msgid "choice"
+msgstr "Seçenek"
+
+msgid "choices"
+msgstr "Seçenekler"
+
+msgid "user"
+msgstr "Kullanıcı"
+
+msgid "users"
+msgstr "Kullanıcılar"
+
+msgid "group"
+msgstr "Grup"
+
+msgid "groups"
+msgstr "Gruplar"
+
+msgid "log entry"
+msgstr "Günlük kaydı"
+
+msgid "log entries"
+msgstr "Günlük kayıtları"
+
+msgid "title"
+msgstr "Başlık"
+
+msgid "description"
+msgstr "Açıklama"
+
+msgid "publication date"
+msgstr "Yayın tarihi"
+
+msgid "date published"
+msgstr "Yayın tarihi"
+
+msgid "question text"
+msgstr "Soru metni"
+
+msgid "question count"
+msgstr "Soru sayısı"
+
+msgid "published recently?"
+msgstr "Yakın zamanda yayınlandı mı?"
+
+msgid "choice text"
+msgstr "Seçenek metni"
+
+msgid "votes"
+msgstr "Oy sayısı"
+
+msgid "Add"
+msgstr "Ekle"
+
+msgid "View"
+msgstr "Görüntüle"
+
+msgid "Change"
+msgstr "Düzenle"
+
+msgid "Save"
+msgstr "Kaydet"
+
+msgid "Save and add another"
+msgstr "Kaydet ve yeni ekle"
+
+msgid "Save and continue editing"
+msgstr "Kaydet ve düzenlemeye devam et"
+
+msgid "Cancel"
+msgstr "İptal"
+
+msgid "Search"
+msgstr "Ara"
+
+msgid "Filter"
+msgstr "Filtrele"
+
+msgid "Reset"
+msgstr "Sıfırla"
+
+msgid "Actions"
+msgstr "İşlemler"
+
+msgid "Go"
+msgstr "Uygula"
+
+msgid "Delete selected"
+msgstr "Seçilenleri sil"
+
+msgid "Select all"
+msgstr "Tümünü seç"
+
+msgid "Clear selection"
+msgstr "Seçimi temizle"
+
+msgid "Remove"
+msgstr "Kaldır"
+
+msgid "Site administration"
+msgstr "Site yönetimi"
+
+msgid "Recent actions"
+msgstr "Son işlemler"
+
+msgid "My actions"
+msgstr "İşlemlerim"
+
+msgid "None available"
+msgstr "Mevcut değil"
+
+msgid "Unknown content"
+msgstr "Bilinmeyen içerik"
+
+msgid "You don't have permission to view or edit anything."
+msgstr "Bu içeriği görüntüleme veya düzenleme yetkiniz yok."
+
+msgid "Models in the %(name)s application"
+msgstr "%(name)s uygulamasındaki modeller"
+
+msgid "Home"
+msgstr "Ana sayfa"
+
+msgid "Administration"
+msgstr "Yönetim"
+
+msgid "Toggle navigation"
+msgstr "Navigasyonu aç/kapat"
+
+msgid "Add %s"
+msgstr "%s ekle"
+
+msgid "Change %s"
+msgstr "%s düzenle"
+
+msgid "Select %s to change"
+msgstr "Düzenlenecek %s seç"
+
+msgid "Select %s to view"
+msgstr "Görüntülenecek %s seç"
+
+msgid "Add another %s"
+msgstr "Başka %s ekle"
+
+msgid "Are you sure?"
+msgstr "Emin misiniz?"
+
+msgid "Yes, I'm sure"
+msgstr "Evet, eminim"
+
+msgid "No, take me back"
+msgstr "Hayır, geri dön"
+
+msgid "Please correct the error below."
+msgstr "Lütfen aşağıdaki hatayı düzeltin."
+
+msgid "Please correct the errors below."
+msgstr "Lütfen aşağıdaki hataları düzeltin."
+
+msgid "The %(name)s \"%(obj)s\" was added successfully."
+msgstr "%(name)s \"%(obj)s\" başarıyla eklendi."
+
+msgid "The %(name)s \"%(obj)s\" was changed successfully."
+msgstr "%(name)s \"%(obj)s\" başarıyla güncellendi."
+
+msgid "The %(name)s \"%(obj)s\" was deleted successfully."
+msgstr "%(name)s \"%(obj)s\" başarıyla silindi."
+
+msgid "Any date"
+msgstr "Herhangi bir tarih"
+
+msgid "Today"
+msgstr "Bugün"
+
+msgid "Past 7 days"
+msgstr "Son 7 gün"
+
+msgid "This month"
+msgstr "Bu ay"
+
+msgid "This year"
+msgstr "Bu yıl"
+
+msgid "All"
+msgstr "Tümü"
+
+msgid "Date hierarchy"
+msgstr "Tarih hiyerarşisi"
+
+msgid "All dates"
+msgstr "Tüm tarihler"
+
+msgid "By %s"
+msgstr "%s'e göre"
+
+msgid "History"
+msgstr "Geçmiş"
+
+msgid "View on site"
+msgstr "Sitede görüntüle"
+
+msgid "Date/time"
+msgstr "Tarih/saat"
+
+msgid "Action"
+msgstr "Eylem"
+
+msgid "object history"
+msgstr "Nesne geçmişi"
+
+msgid "This object doesn't have a change history."
+msgstr "Bu nesnenin değişiklik geçmişi yok."
+
+msgid "Log in"
+msgstr "Giriş yap"
+
+msgid "Log in again"
+msgstr "Tekrar giriş yap"
+
+msgid "Username"
+msgstr "Kullanıcı adı"
+
+msgid "Password"
+msgstr "Şifre"
+
+msgid "Forgotten your password or username?"
+msgstr "Şifrenizi veya kullanıcı adınızı mı unuttunuz?"
+
+msgid "Password change"
+msgstr "Şifre değiştir"
+
+msgid "Password change successful"
+msgstr "Şifre başarıyla değiştirildi"
+
+msgid "Documentation"
+msgstr "Belgeler"
+
+msgid "True"
+msgstr "Evet"
+
+msgid "False"
+msgstr "Hayır"
+
+msgid "Yes"
+msgstr "Evet"
+
+msgid "No"
+msgstr "Hayır"
+
+msgid "Unknown"
+msgstr "Bilinmiyor"
+
+msgid "N/A"
+msgstr "Yok"
+
+msgid "(None)"
+msgstr "(Yok)"
+
+msgid "Empty"
+msgstr "Boş"
+
+msgid "Required."
+msgstr "Zorunlu alan."
+
+msgid "Enter a valid value."
+msgstr "Geçerli bir değer girin."
+
+msgid "This field is required."
+msgstr "Bu alan zorunludur."
+
+msgid "Please enter a correct %(username)s and password."
+msgstr "Lütfen doğru %(username)s ve şifre giriniz."
+
+msgid "Select"
+msgstr "Seç"
+
+msgid "Object ID"
+msgstr "Nesne kimliği"
+
+msgid "Content type"
+msgstr "İçerik türü"
+
+msgid "Action time"
+msgstr "İşlem zamanı"
+
+msgid "Change message"
+msgstr "Değişiklik mesajı"
+
+msgid "Action flag"
+msgstr "İşlem türü"
+
+msgid "%(count)d selected"
+msgstr "%(count)d seçildi"

@@ -1,0 +1,342 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "MySurvey Admin"
+msgstr "MySurvey Admin"
+
+msgid "Welcome"
+msgstr "Welcome"
+
+msgid "View Site"
+msgstr "View Site"
+
+msgid "Change Password"
+msgstr "Change Password"
+
+msgid "Log out"
+msgstr "Log out"
+
+msgid "Are you sure you want to delete all recent actions?"
+msgstr "Are you sure you want to delete all recent actions?"
+
+msgid "Clear All"
+msgstr "Clear All"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "survey"
+msgstr "survey"
+
+msgid "surveys"
+msgstr "surveys"
+
+msgid "polls"
+msgstr "polls"
+
+msgid "question"
+msgstr "question"
+
+msgid "questions"
+msgstr "questions"
+
+msgid "choice"
+msgstr "choice"
+
+msgid "choices"
+msgstr "choices"
+
+msgid "user"
+msgstr "user"
+
+msgid "users"
+msgstr "users"
+
+msgid "group"
+msgstr "group"
+
+msgid "groups"
+msgstr "groups"
+
+msgid "log entry"
+msgstr "log entry"
+
+msgid "log entries"
+msgstr "log entries"
+
+msgid "title"
+msgstr "title"
+
+msgid "description"
+msgstr "description"
+
+msgid "publication date"
+msgstr "publication date"
+
+msgid "date published"
+msgstr "date published"
+
+msgid "question text"
+msgstr "question text"
+
+msgid "question count"
+msgstr "question count"
+
+msgid "published recently?"
+msgstr "published recently?"
+
+msgid "choice text"
+msgstr "choice text"
+
+msgid "votes"
+msgstr "votes"
+
+msgid "Add"
+msgstr "Add"
+
+msgid "View"
+msgstr "View"
+
+msgid "Change"
+msgstr "Change"
+
+msgid "Save"
+msgstr "Save"
+
+msgid "Save and add another"
+msgstr "Save and add another"
+
+msgid "Save and continue editing"
+msgstr "Save and continue editing"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Search"
+msgstr "Search"
+
+msgid "Filter"
+msgstr "Filter"
+
+msgid "Reset"
+msgstr "Reset"
+
+msgid "Actions"
+msgstr "Actions"
+
+msgid "Go"
+msgstr "Go"
+
+msgid "Delete selected"
+msgstr "Delete selected"
+
+msgid "Select all"
+msgstr "Select all"
+
+msgid "Clear selection"
+msgstr "Clear selection"
+
+msgid "Remove"
+msgstr "Remove"
+
+msgid "Site administration"
+msgstr "Site administration"
+
+msgid "Recent actions"
+msgstr "Recent actions"
+
+msgid "My actions"
+msgstr "My actions"
+
+msgid "None available"
+msgstr "None available"
+
+msgid "Unknown content"
+msgstr "Unknown content"
+
+msgid "You don't have permission to view or edit anything."
+msgstr "You don't have permission to view or edit anything."
+
+msgid "Models in the %(name)s application"
+msgstr "Models in the %(name)s application"
+
+msgid "Home"
+msgstr "Home"
+
+msgid "Administration"
+msgstr "Administration"
+
+msgid "Toggle navigation"
+msgstr "Toggle navigation"
+
+msgid "Add %s"
+msgstr "Add %s"
+
+msgid "Change %s"
+msgstr "Change %s"
+
+msgid "Select %s to change"
+msgstr "Select %s to change"
+
+msgid "Select %s to view"
+msgstr "Select %s to view"
+
+msgid "Add another %s"
+msgstr "Add another %s"
+
+msgid "Are you sure?"
+msgstr "Are you sure?"
+
+msgid "Yes, I'm sure"
+msgstr "Yes, I'm sure"
+
+msgid "No, take me back"
+msgstr "No, take me back"
+
+msgid "Please correct the error below."
+msgstr "Please correct the error below."
+
+msgid "Please correct the errors below."
+msgstr "Please correct the errors below."
+
+msgid "The %(name)s \"%(obj)s\" was added successfully."
+msgstr "The %(name)s \"%(obj)s\" was added successfully."
+
+msgid "The %(name)s \"%(obj)s\" was changed successfully."
+msgstr "The %(name)s \"%(obj)s\" was changed successfully."
+
+msgid "The %(name)s \"%(obj)s\" was deleted successfully."
+msgstr "The %(name)s \"%(obj)s\" was deleted successfully."
+
+msgid "Any date"
+msgstr "Any date"
+
+msgid "Today"
+msgstr "Today"
+
+msgid "Past 7 days"
+msgstr "Past 7 days"
+
+msgid "This month"
+msgstr "This month"
+
+msgid "This year"
+msgstr "This year"
+
+msgid "All"
+msgstr "All"
+
+msgid "Date hierarchy"
+msgstr "Date hierarchy"
+
+msgid "All dates"
+msgstr "All dates"
+
+msgid "By %s"
+msgstr "By %s"
+
+msgid "History"
+msgstr "History"
+
+msgid "View on site"
+msgstr "View on site"
+
+msgid "Date/time"
+msgstr "Date/time"
+
+msgid "Action"
+msgstr "Action"
+
+msgid "object history"
+msgstr "object history"
+
+msgid "This object doesn't have a change history."
+msgstr "This object doesn't have a change history."
+
+msgid "Log in"
+msgstr "Log in"
+
+msgid "Log in again"
+msgstr "Log in again"
+
+msgid "Username"
+msgstr "Username"
+
+msgid "Password"
+msgstr "Password"
+
+msgid "Forgotten your password or username?"
+msgstr "Forgotten your password or username?"
+
+msgid "Password change"
+msgstr "Password change"
+
+msgid "Password change successful"
+msgstr "Password change successful"
+
+msgid "Documentation"
+msgstr "Documentation"
+
+msgid "True"
+msgstr "True"
+
+msgid "False"
+msgstr "False"
+
+msgid "Yes"
+msgstr "Yes"
+
+msgid "No"
+msgstr "No"
+
+msgid "Unknown"
+msgstr "Unknown"
+
+msgid "N/A"
+msgstr "N/A"
+
+msgid "(None)"
+msgstr "(None)"
+
+msgid "Empty"
+msgstr "Empty"
+
+msgid "Required."
+msgstr "Required."
+
+msgid "Enter a valid value."
+msgstr "Enter a valid value."
+
+msgid "This field is required."
+msgstr "This field is required."
+
+msgid "Please enter a correct %(username)s and password."
+msgstr "Please enter a correct %(username)s and password."
+
+msgid "Select"
+msgstr "Select"
+
+msgid "Object ID"
+msgstr "Object ID"
+
+msgid "Content type"
+msgstr "Content type"
+
+msgid "Action time"
+msgstr "Action time"
+
+msgid "Change message"
+msgstr "Change message"
+
+msgid "Action flag"
+msgstr "Action flag"
+
+msgid "%(count)d selected"
+msgstr "%(count)d selected"

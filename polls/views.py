@@ -1,0 +1,243 @@
+import datetime
+
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.db.models import F
+from django.http import HttpResponseRedirect, JsonResponse
+from django.shortcuts import get_object_or_404, render, redirect
+from django.urls import reverse
+from django.utils import timezone
+from django.views import generic
+
+from .models import Choice, Question, Survey
+
+
+# ─────────────────────────────────────────────
+# Survey (Index) View
+# ─────────────────────────────────────────────
+
+class SurveyListView(generic.ListView):
+    template_name = "polls/index.html"
+    context_object_name = "survey_list"
+
+    def get_queryset(self):
+        return Survey.objects.filter(pub_date__lte=timezone.now())
+
+
+# ─────────────────────────────────────────────
+# Survey Question View (with next/prev)
+# ─────────────────────────────────────────────
+
+def survey_question(request, survey_id, question_id=None):
+    survey = get_object_or_404(Survey, pk=survey_id)
+    questions = list(survey.questions.all())
+
+    if not questions:
+        return render(request, "polls/detail.html", {
+            "survey": survey,
+            "error_message": "Bu ankette henüz soru yok.",
+        })
+
+    if question_id is None:
+        question = questions[0]
+    else:
+        question = get_object_or_404(Question, pk=question_id, survey=survey)
+
+    idx = questions.index(question)
+    prev_q = questions[idx - 1] if idx > 0 else None
+    next_q = questions[idx + 1] if idx < len(questions) - 1 else None
+    q_num = idx + 1
+    q_total = len(questions)
+
+    return render(request, "polls/detail.html", {
+        "survey": survey,
+        "question": question,
+        "prev_q": prev_q,
+        "next_q": next_q,
+        "q_num": q_num,
+        "q_total": q_total,
+    })
+
+
+# ─────────────────────────────────────────────
+# Vote
+# ─────────────────────────────────────────────
+
+def survey_vote(request, survey_id, question_id):
+    survey = get_object_or_404(Survey, pk=survey_id)
+    question = get_object_or_404(Question, pk=question_id, survey=survey)
+    questions = list(survey.questions.all())
+    idx = questions.index(question)
+
+    try:
+        selected_choice = question.choice_set.get(pk=request.POST["choice"])
+    except (KeyError, Choice.DoesNotExist):
+        prev_q = questions[idx - 1] if idx > 0 else None
+        next_q = questions[idx + 1] if idx < len(questions) - 1 else None
+        return render(request, "polls/detail.html", {
+            "survey": survey,
+            "question": question,
+            "prev_q": prev_q,
+            "next_q": next_q,
+            "q_num": idx + 1,
+            "q_total": len(questions),
+            "error_message": "Bir seçenek seçmediniz.",
+        })
+
+    selected_choice.votes = F("votes") + 1
+    selected_choice.save()
+
+    # Go to next question, or results if this was the last
+    if idx < len(questions) - 1:
+        next_q = questions[idx + 1]
+        return HttpResponseRedirect(
+            reverse("polls:survey_question", args=(survey.id, next_q.id))
+        )
+    return HttpResponseRedirect(
+        reverse("polls:survey_results", args=(survey.id,))
+    )
+
+
+# ─────────────────────────────────────────────
+# Survey Results
+# ─────────────────────────────────────────────
+
+def survey_results(request, survey_id):
+    survey = get_object_or_404(Survey, pk=survey_id)
+    questions_data = []
+    for question in survey.questions.all():
+        total = question.total_votes
+        choices_with_pct = []
+        
+        # Determine highest votes for "Leading" badge
+        max_votes = 0
+        for choice in question.choice_set.all():
+            if choice.votes > max_votes:
+                max_votes = choice.votes
+
+        for choice in question.choice_set.all():
+            # Calculate percentage formatted string with dot
+            pct_val = (choice.votes / total * 100) if total > 0 else 0
+            is_leading = (choice.votes == max_votes) and (max_votes > 0)
+            
+            choices_with_pct.append({
+                "choice": choice, 
+                "percentage": pct_val,
+                "is_leading": is_leading
+            })
+
+        questions_data.append({
+            "question": question,
+            "choices_with_pct": choices_with_pct,
+            "total_votes": total,
+        })
+    return render(request, "polls/results.html", {
+        "survey": survey,
+        "questions_data": questions_data,
+    })
+
+
+# ─────────────────────────────────────────────
+# Auth Views
+# ─────────────────────────────────────────────
+
+def register_view(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect("polls:index")
+    else:
+        form = UserCreationForm()
+    return render(request, "polls/register.html", {"form": form})
+
+
+def login_view(request):
+    error = None
+    if request.method == "POST":
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect(request.GET.get("next", "polls:index"))
+        else:
+            error = "Kullanıcı adı veya şifre hatalı."
+    else:
+        form = AuthenticationForm()
+    return render(request, "polls/login.html", {"form": form, "error": error})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect("polls:index")
+
+
+def user_switch(request):
+    """Dedicated user info / switch page."""
+    return render(request, "polls/user_switch.html", {
+        "current_user": request.user,
+    })
+
+
+# ─────────────────────────────────────────────
+# Legacy redirect stubs (keep old URL working)
+# ─────────────────────────────────────────────
+
+class IndexView(generic.ListView):
+    """Redirect old /polls/ to SurveyListView."""
+    template_name = "polls/index.html"
+    context_object_name = "survey_list"
+
+    def get_queryset(self):
+        return Survey.objects.filter(pub_date__lte=timezone.now())
+
+
+class DetailView(generic.DetailView):
+    model = Question
+    template_name = "polls/detail.html"
+
+    def get_queryset(self):
+        return Question.objects.filter(pub_date__lte=timezone.now())
+
+
+class ResultsView(generic.DetailView):
+    model = Question
+    template_name = "polls/results.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        question = self.object
+        total = question.total_votes
+        choices_with_pct = []
+        
+        max_votes = 0
+        for choice in question.choice_set.all():
+            if choice.votes > max_votes:
+                max_votes = choice.votes
+
+        for choice in question.choice_set.all():
+            pct_val = (choice.votes / total * 100) if total > 0 else 0
+            is_leading = (choice.votes == max_votes) and (max_votes > 0)
+            choices_with_pct.append({
+                "choice": choice, 
+                "percentage": pct_val,
+                "is_leading": is_leading
+            })
+        context["choices_with_pct"] = choices_with_pct
+        context["total_votes"] = total
+        return context
+
+
+def vote(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    try:
+        selected_choice = question.choice_set.get(pk=request.POST["choice"])
+    except (KeyError, Choice.DoesNotExist):
+        return render(request, "polls/detail.html", {
+            "question": question,
+            "error_message": "Bir seçenek seçmediniz.",
+        })
+    selected_choice.votes = F("votes") + 1
+    selected_choice.save()
+    return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))

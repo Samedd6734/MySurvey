@@ -1,0 +1,159 @@
+{% extends "polls/base.html" %}
+
+{% block title %} Anketler | MySurvey {% endblock %}
+
+{% block content %}
+<!-- Header -->
+<div class="mb-10 fade-in">
+    <div class="flex items-center gap-3 mb-2">
+        <span class="relative flex h-2.5 w-2.5">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+        </span>
+        <span class="text-xs font-semibold uppercase tracking-widest text-emerald-400"
+              data-tr="Canlı" data-en="Live">Canlı</span>
+    </div>
+    <h1 class="font-display text-4xl md:text-5xl font-extrabold tracking-tight leading-tight mb-3 text-slate-100">
+        <span data-tr="Günün" data-en="Today's">Günün</span>
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-cyan-400"
+              data-tr="Anketleri" data-en="Surveys">Anketleri</span>
+    </h1>
+    <p class="text-lg max-w-xl text-slate-400"
+       data-tr="Topluluğun ne düşündüğünü keşfet ve sen de sesini duyur."
+       data-en="Discover what the community thinks and make your voice heard.">
+        Topluluğun ne düşündüğünü keşfet ve sen de sesini duyur.
+    </p>
+</div>
+
+{% if survey_list %}
+<!-- Stats Row -->
+<div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+    <div class="glass-card rounded-2xl p-4 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-sky-500/15 flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-sky-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path
+                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
+        </div>
+        <div>
+            <p class="text-2xl font-display font-bold text-slate-100">{{ survey_list|length }}</p>
+            <p class="text-xs text-slate-400"
+               data-tr="Aktif anket" data-en="Active surveys">Aktif anket</p>
+        </div>
+    </div>
+    <div class="glass-card rounded-2xl p-4 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-cyan-500/15 flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-cyan-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path
+                    d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        </div>
+        <div>
+            <p class="text-2xl font-display font-bold text-slate-100">∞</p>
+            <p class="text-xs text-slate-400"
+               data-tr="Topluluk" data-en="Community">Topluluk</p>
+        </div>
+    </div>
+    <div class="glass-card rounded-2xl p-4 hidden md:flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-amber-500/15 flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+        </div>
+        <div>
+            <p class="text-2xl font-display font-bold text-slate-100"
+               data-tr="Anlık" data-en="Live">Anlık</p>
+            <p class="text-xs text-slate-400"
+               data-tr="Sonuç" data-en="Results">Sonuç</p>
+        </div>
+    </div>
+</div>
+
+<!-- Survey Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+    {% for survey in survey_list %}
+    <a href="{% url 'polls:survey_start' survey.id %}" class="block group cursor-pointer">
+        <div class="glass-card card-hover rounded-2xl p-6 md:p-7 h-full flex flex-col relative overflow-hidden">
+            <div
+                class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-sky-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+            </div>
+
+            <!-- Badge row -->
+            <div class="flex items-start justify-between mb-4">
+                <span
+                    class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-sky-500/10 text-sky-400 text-xs font-bold border border-sky-500/20">#{{ forloop.counter }}</span>
+                <div class="flex items-center gap-2">
+                    <span
+                        class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-surface-elevated border border-surface text-xs text-ink-faint">
+                        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        {{ survey.question_count }}
+                        <span data-tr="soru" data-en="questions">soru</span>
+                    </span>
+                    <span class="relative flex h-2 w-2">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Title -->
+            <h2
+                class="font-display text-xl font-bold text-ink mb-2 leading-snug group-hover:text-sky-300 transition-colors duration-300 flex-grow">
+                {{ survey.title }}
+            </h2>
+            {% if survey.description %}
+            <p class="text-sm text-ink-faint mb-4 line-clamp-2">{{ survey.description }}</p>
+            {% endif %}
+
+            <!-- Footer -->
+            <div class="flex items-center justify-between pt-4 border-t border-surface mt-auto">
+                <div class="flex items-center gap-2">
+                    <svg class="w-3.5 h-3.5 text-ink-faint" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <path
+                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <span class="text-xs text-ink-faint">{{ survey.pub_date|date:"d M Y" }}</span>
+                </div>
+                <span class="inline-flex items-center gap-1.5 text-sm font-semibold text-sky-400 group-hover:gap-2.5 transition-all duration-300"
+                      data-tr="Katıl" data-en="Join">Katıl
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                </span>
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+
+{% else %}
+<!-- Empty State -->
+<div class="glass-card rounded-3xl p-16 text-center max-w-lg mx-auto">
+    <div class="w-20 h-20 rounded-2xl bg-surface-elevated mx-auto mb-6 flex items-center justify-center">
+        <svg class="w-10 h-10 text-ink-faint" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+        </svg>
+    </div>
+    <h3 class="font-display text-xl font-bold mb-2 text-slate-100"
+        data-tr="Henüz anket yok" data-en="No surveys yet">Henüz anket yok</h3>
+    <p class="text-sm mb-6 text-slate-400"
+       data-tr="Admin panelinden yeni bir anket oluşturun."
+       data-en="Create a new survey from the admin panel.">
+        Admin panelinden yeni bir anket oluşturun.
+    </p>
+    <a href="/admin/polls/survey/add/"
+        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-sky-500 to-cyan-500 shadow-lg shadow-sky-500/25 hover:shadow-sky-500/40 transition-all duration-200 cursor-pointer">
+        <span data-tr="Anket ekle" data-en="Add survey">Anket ekle</span>
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 4v16m8-8H4" />
+        </svg>
+    </a>
+</div>
+{% endif %}
+{% endblock %}

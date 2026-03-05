@@ -1,0 +1,214 @@
+{% extends "polls/base.html" %}
+
+{% block title %}Hesabım | MySurvey{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto">
+
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 text-xs text-ink-faint mb-6">
+        <a href="{% url 'polls:index' %}" class="hover:text-sky-400 transition-colors cursor-pointer" data-tr="Anketler" data-en="Surveys">Anketler</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 5l7 7-7 7" />
+        </svg>
+        <span class="text-ink-muted" data-tr="Hesabım" data-en="My Account">Hesabım</span>
+    </div>
+
+    {% if current_user.is_authenticated %}
+    <!-- ─── LOGGED IN ─── -->
+    <div class="glass-card rounded-3xl p-8 relative overflow-hidden">
+        <div
+            class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-emerald-500 to-transparent">
+        </div>
+        <div class="absolute -top-20 -right-20 w-56 h-56 rounded-full bg-emerald-500/5 blur-3xl pointer-events-none">
+        </div>
+
+        <!-- Avatar -->
+        <div class="text-center mb-7">
+            <div class="relative inline-flex mb-4">
+                <div
+                    class="w-20 h-20 rounded-2xl bg-gradient-to-br from-sky-500 to-cyan-500 flex items-center justify-center shadow-xl shadow-sky-500/30">
+                    <svg class="w-10 h-10 text-white" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z" />
+                    </svg>
+                </div>
+                <div
+                    class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-emerald-500 border-2 border-surface flex items-center justify-center">
+                    <svg class="w-2.5 h-2.5 text-white" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </div>
+            </div>
+
+            <p class="font-display text-2xl font-bold text-ink mb-1">{{ current_user.username }}</p>
+            <p class="text-sm text-ink-faint mb-3">{{ current_user.email|default:"" }}</p>
+
+            {% if current_user.is_superuser %}
+            <span
+                class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/15 text-amber-400 border border-amber-500/25">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
+                <span data-tr="Süper Yönetici" data-en="Super Admin">Süper Yönetici</span>
+            </span>
+            {% elif current_user.is_staff %}
+            <span
+                class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-sky-500/15 text-sky-400 border border-sky-500/25">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                <span data-tr="Yönetici" data-en="Admin">Yönetici</span>
+            </span>
+            {% else %}
+            <span
+                class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/25">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                <span data-tr="Üye" data-en="Member">Üye</span>
+            </span>
+            {% endif %}
+        </div>
+
+        <!-- Divider -->
+        <div class="border-t border-surface-border mb-5"></div>
+
+        <!-- Actions -->
+        <div class="space-y-3">
+            {% if current_user.is_staff or current_user.is_superuser %}
+            <a href="/admin/"
+                class="flex items-center gap-4 p-4 rounded-2xl bg-surface-card/60 border border-surface-border hover:border-amber-500/30 hover:bg-amber-500/5 transition-all duration-200 cursor-pointer group">
+                <div
+                    class="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center flex-shrink-0 group-hover:bg-amber-500/20 transition-colors">
+                    <svg class="w-5 h-5 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <path
+                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                </div>
+                <div class="flex-grow min-w-0">
+                    <p class="text-sm font-semibold text-ink group-hover:text-amber-300 transition-colors" data-tr="Admin Paneli" data-en="Admin Panel">Admin Paneli</p>
+                    <p class="text-xs text-ink-faint" data-tr="Anket ve kullanıcı yönetimi" data-en="Survey & user management">Anket ve kullanıcı yönetimi</p>
+                </div>
+                <svg class="w-4 h-4 text-ink-faint group-hover:text-amber-400 group-hover:translate-x-1 transition-all"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+            </a>
+            {% endif %}
+
+            <a href="{% url 'polls:index' %}"
+                class="flex items-center gap-4 p-4 rounded-2xl bg-surface-card/60 border border-surface-border hover:border-sky-500/30 hover:bg-sky-500/5 transition-all duration-200 cursor-pointer group">
+                <div
+                    class="w-10 h-10 rounded-xl bg-sky-500/10 flex items-center justify-center flex-shrink-0 group-hover:bg-sky-500/20 transition-colors">
+                    <svg class="w-5 h-5 text-sky-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <path
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                </div>
+                <div class="flex-grow min-w-0">
+                    <p class="text-sm font-semibold text-ink group-hover:text-sky-300 transition-colors" data-tr="Anketler" data-en="Surveys">Anketler</p>
+                    <p class="text-xs text-ink-faint" data-tr="Tüm anketlere gözat" data-en="Browse all surveys">Tüm anketlere gözat</p>
+                </div>
+                <svg class="w-4 h-4 text-ink-faint group-hover:text-sky-400 group-hover:translate-x-1 transition-all"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+            </a>
+
+            <a href="{% url 'polls:logout' %}"
+                class="flex items-center gap-4 p-4 rounded-2xl bg-surface-card/60 border border-surface-border hover:border-red-500/30 hover:bg-red-500/5 transition-all duration-200 cursor-pointer group">
+                <div
+                    class="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center flex-shrink-0 group-hover:bg-red-500/20 transition-colors">
+                    <svg class="w-5 h-5 text-red-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                </div>
+                <div class="flex-grow min-w-0">
+                    <p class="text-sm font-semibold text-ink group-hover:text-red-400 transition-colors" data-tr="Çıkış Yap" data-en="Log out">Çıkış Yap</p>
+                    <p class="text-xs text-ink-faint" data-tr="Oturumu sonlandır" data-en="End session">Oturumu sonlandır</p>
+                </div>
+                <svg class="w-4 h-4 text-ink-faint group-hover:text-red-400 group-hover:translate-x-1 transition-all"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    {% else %}
+    <!-- ─── NOT LOGGED IN ─── -->
+    <div class="glass-card rounded-3xl p-8 relative overflow-hidden">
+        <div class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-sky-500 to-transparent">
+        </div>
+        <div class="absolute -top-20 -right-20 w-56 h-56 rounded-full bg-sky-500/5 blur-3xl pointer-events-none"></div>
+
+        <!-- Hero -->
+        <div class="text-center mb-8">
+            <div
+                class="w-20 h-20 rounded-2xl bg-gradient-to-br from-sky-500/20 to-cyan-500/10 border border-sky-500/20 flex items-center justify-center mx-auto mb-5">
+                <svg class="w-10 h-10 text-sky-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="1.5">
+                    <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+            </div>
+            <h2 class="font-display text-2xl font-bold text-ink mb-2" data-tr="Hoş Geldiniz" data-en="Welcome">Hoş Geldiniz</h2>
+            <p class="text-sm text-ink-muted" data-tr="Oy kullanmak ve ankete katılmak için giriş yapın." data-en="Log in to vote and participate in surveys.">Oy kullanmak ve ankete katılmak için giriş yapın.</p>
+        </div>
+
+        <!-- Login Form -->
+        <form method="post" action="{% url 'polls:login' %}?next=/polls/switch/" class="space-y-4">
+            {% csrf_token %}
+            <div>
+                <label for="id_username"
+                    class="block text-xs font-semibold text-ink-muted uppercase tracking-wide mb-1.5"
+                    data-tr="Kullanıcı Adı" data-en="Username">Kullanıcı Adı</label>
+                <input type="text" id="id_username" name="username" required autocomplete="username"
+                    class="w-full px-4 py-3 bg-surface border border-surface-border rounded-xl text-ink placeholder-ink-faint text-sm focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500/30 transition-colors"
+                    placeholder="kullanıcı_adı">
+            </div>
+            <div>
+                <label for="id_password"
+                    class="block text-xs font-semibold text-ink-muted uppercase tracking-wide mb-1.5"
+                    data-tr="Şifre" data-en="Password">Şifre</label>
+                <div class="relative">
+                    <input type="password" id="id_password" name="password" required autocomplete="current-password"
+                        class="w-full px-4 py-3 bg-surface border border-surface-border rounded-xl text-ink placeholder-ink-faint text-sm focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500/30 transition-colors pr-12"
+                        placeholder="••••••••">
+                    <button type="button" onclick="togglePassword('id_password', this)"
+                        class="absolute inset-y-0 right-0 px-3 flex items-center text-ink-muted hover:text-ink transition-colors">
+                        <svg class="w-5 h-5 eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                        <svg class="w-5 h-5 eye-off-icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" /></svg>
+                    </button>
+                </div>
+            </div>
+            <button type="submit"
+                class="btn-glow w-full py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-sky-500 to-cyan-500 shadow-lg shadow-sky-500/25 hover:shadow-sky-500/45 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
+                data-tr="Giriş Yap" data-en="Log In">
+                Giriş Yap
+            </button>
+        </form>
+
+        <div class="flex items-center gap-3 my-6">
+            <div class="flex-grow h-px bg-surface-border"></div>
+            <span class="text-xs text-ink-faint" data-tr="ya da" data-en="or">ya da</span>
+            <div class="flex-grow h-px bg-surface-border"></div>
+        </div>
+
+        <a href="{% url 'polls:register' %}"
+            class="flex items-center justify-center gap-2 w-full py-3 rounded-xl text-sm font-semibold text-sky-400 border border-sky-500/30 hover:bg-sky-500/10 hover:border-sky-500/50 transition-all duration-200 cursor-pointer">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+            </svg>
+            <span data-tr="Hesap Oluştur" data-en="Create Account">Hesap Oluştur</span>
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

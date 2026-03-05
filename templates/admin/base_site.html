@@ -1,0 +1,422 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+    /* Admin Navbar Logo Hizalama */
+    #branding h1 a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* ── 1. Her yerde büyük harfi kapat ── */
+    * {
+        text-transform: none !important;
+        letter-spacing: normal !important;
+    }
+
+    /* ── 2. Kolon başlıkları, sidebar başlıkları → ilk harf büyük ── */
+    #changelist table thead th a,
+    #changelist table thead th,
+    #nav-sidebar .module caption a,
+    #nav-sidebar .module caption,
+    .module caption,
+    .module > h2,
+    #content-related h2,
+    #content-related h3,
+    #changelist-filter h2,
+    #changelist-filter h3,
+    .object-tools a,
+    div.breadcrumbs a {
+        text-transform: capitalize !important;
+    }
+    
+    /* User Tools Genel Düzen */
+    #user-tools {
+        display: flex;
+        align-items: center;
+        font-weight: 500;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .user-welcome {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--header-color);
+        background: rgba(0,0,0,0.15);
+        padding: 4px 12px;
+        border-radius: 9999px;
+        font-size: 0.85rem;
+        margin-right: 16px;
+        border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .user-welcome-icon {
+        width: 14px;
+        height: 14px;
+        opacity: 0.8;
+    }
+    
+    .header-links {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+    
+    .header-link {
+        color: var(--header-link-color);
+        text-decoration: none !important;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.85rem;
+        transition: all 0.2s ease;
+    }
+    
+    .header-link:hover {
+        color: var(--header-color);
+    }
+
+    .header-link svg {
+        opacity: 0.7;
+        transition: opacity 0.2s ease;
+    }
+    .header-link:hover svg {
+        opacity: 1;
+    }
+
+    /* Çıkış yap butonu styling sıfırlama */
+    #logout-form {
+        margin: 0;
+    }
+    
+    #logout-form button {
+        background: transparent;
+        border: none;
+        padding: 0;
+        margin: 0;
+        color: var(--header-link-color);
+        cursor: pointer;
+        font-weight: 500;
+        font-family: inherit;
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s ease;
+    }
+
+    #logout-form button:hover {
+        color: var(--header-color);
+    }
+
+    #logout-form button svg {
+        opacity: 0.7;
+        transition: opacity 0.2s ease;
+    }
+    #logout-form button:hover svg {
+        opacity: 1;
+    }
+
+    /* Tema Butonu İçin Ayırıcı */
+    .theme-divider {
+        width: 1px;
+        height: 20px;
+        background: var(--header-link-color);
+        opacity: 0.2;
+        margin: 0 8px;
+    }
+
+    /* Dil Değiştirici */
+    .lang-switcher {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .lang-switcher-btn {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.13);
+        border-radius: 9999px;
+        padding: 4px 10px 4px 8px;
+        cursor: pointer;
+        color: var(--header-link-color);
+        font-size: 0.78rem;
+        font-weight: 600;
+        font-family: inherit;
+        letter-spacing: 0.04em;
+        transition: all 0.2s ease;
+    }
+
+    .lang-switcher-btn:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: var(--header-color);
+    }
+
+    .lang-switcher-btn svg {
+        width: 13px;
+        height: 13px;
+        opacity: 0.75;
+    }
+
+    .lang-switcher-dropdown {
+        display: none;
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        background: var(--darkened-bg, #1a1f2e);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 8px;
+        min-width: 120px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        overflow: hidden;
+        z-index: 9999;
+    }
+
+    .lang-switcher-dropdown.open {
+        display: block;
+    }
+
+    .lang-switcher-dropdown form {
+        margin: 0;
+    }
+
+    .lang-switcher-dropdown button {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        padding: 9px 14px;
+        background: transparent;
+        border: none;
+        color: var(--header-link-color, rgba(255,255,255,0.7));
+        font-size: 0.82rem;
+        font-weight: 500;
+        font-family: inherit;
+        cursor: pointer;
+        text-align: left;
+        transition: background 0.15s ease;
+    }
+
+    .lang-switcher-dropdown button:hover {
+        background: rgba(255,255,255,0.07);
+        color: var(--header-color, #fff);
+    }
+
+    .lang-switcher-dropdown button.active-lang {
+        color: var(--header-color, #fff);
+        font-weight: 700;
+    }
+
+    .lang-flag {
+        font-size: 1rem;
+        line-height: 1;
+    }
+
+    /* Özel Tema Butonu */
+    #custom-theme-toggle {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        cursor: pointer;
+        color: var(--header-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+    }
+
+    #custom-theme-toggle:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: var(--header-color);
+        transform: scale(1.05);
+    }
+    
+    #custom-theme-toggle svg {
+        width: 16px;
+        height: 16px;
+    }
+</style>
+<script>
+    // ── Admin Idle Auto-Logout (1 hour = 3,600,000 ms) ──────────────────────
+    (function () {
+        const IDLE_TIMEOUT_MS = 3600000; // 1 hour
+        const LOGOUT_URL = "/admin/logout/";
+        let idleTimer;
+
+        function resetTimer() {
+            clearTimeout(idleTimer);
+            idleTimer = setTimeout(function () {
+                // Show brief alert then logout
+                if (confirm("1 saat hareketsizlik nedeniyle oturumunuz sona erecek. Çıkış yapılsın mı?")) {
+                    window.location.href = LOGOUT_URL;
+                } else {
+                    resetTimer(); // User clicked cancel — reset timer
+                }
+            }, IDLE_TIMEOUT_MS);
+        }
+
+        // Monitor all user activity events
+        ["mousemove", "mousedown", "keypress", "touchstart", "click", "scroll"].forEach(function (evt) {
+            document.addEventListener(evt, resetTimer, true);
+        });
+
+        // Start the timer on page load
+        resetTimer();
+    })();
+
+    // ── 2-Modlu Özel Tema Butonu Mantığı ────────────────────────────────
+    document.addEventListener("DOMContentLoaded", function() {
+        const toggleBtn = document.getElementById('custom-theme-toggle');
+        if (!toggleBtn) return;
+        
+        const iconLight = document.getElementById('theme-icon-light');
+        const iconDark = document.getElementById('theme-icon-dark');
+        
+        // Ensure starting theme is strictly light or dark (remove "auto")
+        let current = localStorage.getItem('theme');
+        if (current !== 'light' && current !== 'dark') {
+            current = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            document.documentElement.dataset.theme = current;
+            localStorage.setItem('theme', current);
+        }
+
+        function updateIcon() {
+            if (document.documentElement.dataset.theme === 'dark') {
+                iconLight.style.display = 'block';
+                iconDark.style.display = 'none';
+            } else {
+                iconLight.style.display = 'none';
+                iconDark.style.display = 'block';
+            }
+        }
+        updateIcon();
+
+        toggleBtn.addEventListener('click', function() {
+            let mode = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+            document.documentElement.dataset.theme = mode;
+            localStorage.setItem('theme', mode);
+            updateIcon();
+        });
+    });
+
+    // ── Dil Seçici Dropdown ────────────────────────────────────────────
+    document.addEventListener("DOMContentLoaded", function() {
+        const btn = document.getElementById('lang-switcher-btn');
+        const dropdown = document.getElementById('lang-switcher-dropdown');
+        if (!btn || !dropdown) return;
+
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdown.classList.toggle('open');
+        });
+
+        document.addEventListener('click', function() {
+            dropdown.classList.remove('open');
+        });
+    });
+</script>
+{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}">
+        <svg width="22" height="22" viewBox="0 0 18 18" fill="none">
+            <rect x="2" y="9" width="3" height="7" rx="1" fill="currentColor" opacity="0.7" />
+            <rect x="7" y="5" width="3" height="11" rx="1" fill="currentColor" opacity="0.9" />
+            <rect x="12" y="2" width="3" height="14" rx="1" fill="currentColor" />
+        </svg>
+        {% translate "MySurvey Admin" %}
+    </a>
+</h1>
+{% endblock %}
+
+{% block usertools %}
+{% if has_permission %}
+<div id="user-tools">
+    {% block welcome-msg %}
+        <div class="user-welcome">
+            <svg class="user-welcome-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+            </svg>
+            <strong>{% translate "Welcome" %}, {% firstof user.get_short_name user.get_username %}</strong>
+        </div>
+    {% endblock %}
+    
+    <div class="header-links">
+        {% block userlinks %}
+            <a href="{% url 'polls:index' %}" class="header-link">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+                </svg>
+                {% translate "View Site" %}
+            </a>
+            
+            {% if user.has_usable_password %}
+            <a href="{% url 'admin:password_change' %}" class="header-link">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+                {% translate "Change Password" %}
+            </a>
+            {% endif %}
+            
+            <form id="logout-form" method="post" action="{% url 'admin:logout' %}">
+                {% csrf_token %}
+                <button type="submit">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+                    </svg>
+                    {% translate "Log out" %}
+                </button>
+            </form>
+            
+            <div class="theme-divider"></div>
+
+            <!-- Dil Değiştirici - Styled Dropdown -->
+            {% get_current_language as LANGUAGE_CODE %}
+            {% get_available_languages as AVAILABLE_LANGS %}
+            <div class="lang-switcher" id="lang-switcher">
+                <button type="button" class="lang-switcher-btn" id="lang-switcher-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                    </svg>
+                    {{ LANGUAGE_CODE|upper }}
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.6;"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+
+                <div class="lang-switcher-dropdown" id="lang-switcher-dropdown">
+                    {% for lang in AVAILABLE_LANGS %}
+                    <form action="{% url 'set_language' %}" method="post">
+                        {% csrf_token %}
+                        <input name="next" type="hidden" value="{{ request.get_full_path|default:request.path }}">
+                        <input name="language" type="hidden" value="{{ lang.0 }}">
+                        <button type="submit" class="{% if lang.0 == LANGUAGE_CODE %}active-lang{% endif %}">
+                            {% if lang.0 == 'tr' %}<span class="lang-flag">🇹🇷</span> Türkçe{% endif %}
+                            {% if lang.0 == 'en' %}<span class="lang-flag">🇬🇧</span> English{% endif %}
+                        </button>
+                    </form>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <button id="custom-theme-toggle" type="button" title="Açık/Koyu Tema">
+              <!-- Gündüz (Light) Modunda Gözükecek Ay İkonu (Koyu Moda Geçiş Yapar) -->
+              <svg id="theme-icon-light" style="display:none;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+              <!-- Gece (Dark) Modunda Gözükecek Güneş İkonu (Açık Moda Geçiş Yapar) -->
+              <svg id="theme-icon-dark" style="display:none;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+            </button>
+        {% endblock %}
+    </div>
+</div>
+{% endif %}
+{% endblock %}

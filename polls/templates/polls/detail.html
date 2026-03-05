@@ -1,0 +1,96 @@
+{% extends "polls/base.html" %}
+
+{% block title %}Soru {{ q_num }} / {{ q_total }} | MySurvey{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 text-xs text-slate-500 mb-6">
+        <a href="{% url 'polls:index' %}" class="hover:text-sky-400 transition-colors cursor-pointer"
+           data-tr="Anketler" data-en="Surveys">Anketler</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 5l7 7-7 7" />
+        </svg>
+        <span class="text-slate-400">{{ survey.title }}</span>
+    </div>
+
+    <!-- Header -->
+    <div class="flex items-start justify-between mb-6 gap-4">
+        <div>
+            <h1 class="font-display text-2xl md:text-3xl font-extrabold text-slate-100 leading-tight mb-1">
+                {{ survey.title }}
+            </h1>
+        </div>
+        <span class="inline-flex items-center px-3 py-1.5 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-400 text-xs font-semibold flex-shrink-0">
+            <span data-tr="Soru" data-en="Question">Soru</span> {{ q_num }} / {{ q_total }}
+        </span>
+    </div>
+
+    <!-- Question Card -->
+    <div class="glass-card rounded-3xl p-6 md:p-8 relative overflow-hidden">
+        <div class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-amber-500/40 to-transparent"></div>
+
+        {% if error_message %}
+        <div class="bg-red-500/10 border border-red-500/20 rounded-2xl p-4 mb-6 flex items-start gap-3">
+            <svg class="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 8v4m0 4h.01" />
+            </svg>
+            <p class="text-sm text-red-300">{{ error_message }}</p>
+        </div>
+        {% endif %}
+
+        {% if question %}
+        <!-- Question Title -->
+        <h2 class="font-display text-xl md:text-2xl font-bold text-slate-100 mb-6">
+            {{ question.question_text }}
+        </h2>
+
+         <!-- Form Selection -->
+        <form action="{% url 'polls:survey_vote' survey.id question.id %}" method="post" class="space-y-4">
+            {% csrf_token %}
+            <div class="space-y-3">
+                {% for choice in question.choice_set.all %}
+                <label class="choice-label flex items-center gap-4 p-4 rounded-xl border cursor-pointer group glow-border">
+                    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}"
+                        class="w-5 h-5 text-sky-500 border-2 border-slate-600 focus:ring-sky-500/50"
+                        style="accent-color: #0EA5E9;">
+                    <span class="text-base font-medium text-slate-100 group-hover:text-sky-300 transition-colors">
+                        {{ choice.choice_text }}
+                    </span>
+                </label>
+                {% endfor %}
+            </div>
+
+            <!-- Actions -->
+            <div class="mt-8 pt-6 border-t border-surface flex items-center justify-between">
+                <div>
+                    {% if prev_q %}
+                    <a href="{% url 'polls:survey_question' survey.id prev_q.id %}"
+                        class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border border-slate-700/50 text-slate-400 hover:bg-slate-800/50 transition-all">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                        </svg>
+                        <span data-tr="Geri" data-en="Back">Geri</span>
+                    </a>
+                    {% endif %}
+                </div>
+                
+                <button type="submit"
+                    class="btn-glow inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-sky-500 to-cyan-500 shadow-lg shadow-sky-500/25 hover:shadow-sky-500/40 hover:-translate-y-0.5 transition-all">
+                    {% if next_q %}
+                    <span data-tr="İleri" data-en="Next">İleri</span>
+                    {% else %}
+                    <span data-tr="Anketi bitir" data-en="Finish survey">Anketi bitir</span>
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    {% endif %}
+                </button>
+            </div>
+        </form>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,124 @@
+{% extends "polls/base.html" %}
+
+{% block title %}Kayıt Ol | MySurvey{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto">
+
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 text-xs text-slate-500 mb-6">
+        <a href="{% url 'polls:index' %}" class="hover:text-sky-400 transition-colors" data-tr="Anketler" data-en="Surveys">Anketler</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 5l7 7-7 7" />
+        </svg>
+        <a href="{% url 'polls:user_switch' %}" class="hover:text-sky-400 transition-colors" data-tr="Hesabım" data-en="My Account">Hesabım</a>
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 5l7 7-7 7" />
+        </svg>
+        <span class="text-slate-400" data-tr="Kayıt Ol" data-en="Sign Up">Kayıt Ol</span>
+    </div>
+
+    <div class="glass-card rounded-3xl p-8 relative overflow-hidden">
+        <div class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-cyan-500 to-transparent">
+        </div>
+        <div class="absolute -top-20 -right-20 w-56 h-56 rounded-full bg-cyan-500/5 blur-3xl pointer-events-none"></div>
+
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div
+                class="w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-500/20 to-cyan-500/10 border border-sky-500/20 flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8 text-sky-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="1.5">
+                    <path d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                </svg>
+            </div>
+            <h1 class="font-display text-2xl font-bold text-slate-100 mb-1" data-tr="Hesap Oluştur" data-en="Create Account">Hesap Oluştur</h1>
+            <p class="text-sm text-slate-400" data-tr="Anketlere katılmak için ücretsiz kaydol" data-en="Sign up for free to participate in surveys">Anketlere katılmak için ücretsiz kaydol</p>
+        </div>
+
+        <!-- Form Errors -->
+        {% if form.errors %}
+        <div class="bg-red-500/10 border border-red-500/20 rounded-2xl p-4 mb-6 space-y-1">
+            {% for field in form %}
+            {% for error in field.errors %}
+            <p class="text-sm text-red-300 flex items-start gap-2">
+                <svg class="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 8v4m0 4h.01" />
+                </svg>
+                {{ error }}
+            </p>
+            {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+            <p class="text-sm text-red-300">{{ error }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Registration Form -->
+        <form method="post" class="space-y-4">
+            {% csrf_token %}
+            <div>
+                <label for="{{ form.username.id_for_label }}"
+                    class="block text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1.5"
+                    data-tr="Kullanıcı Adı" data-en="Username">Kullanıcı Adı</label>
+                <input type="text" name="username" id="{{ form.username.id_for_label }}" required
+                    autocomplete="username" value="{{ form.username.value|default:'' }}"
+                    class="w-full px-4 py-3 bg-[#0F172A] border {% if form.username.errors %}border-red-500/50{% else %}border-slate-700/50{% endif %} rounded-xl text-slate-200 placeholder-slate-600 text-sm focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500/30 transition-colors"
+                    placeholder="kullanıcı_adı">
+            </div>
+
+            <div>
+                <label for="{{ form.password1.id_for_label }}"
+                    class="block text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1.5"
+                    data-tr="Şifre" data-en="Password">Şifre</label>
+                <div class="relative">
+                    <input type="password" name="password1" id="{{ form.password1.id_for_label }}" required
+                        autocomplete="new-password"
+                        class="w-full px-4 py-3 bg-[#0F172A] border {% if form.password1.errors %}border-red-500/50{% else %}border-slate-700/50{% endif %} rounded-xl text-slate-200 placeholder-slate-600 text-sm focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500/30 transition-colors pr-12"
+                        placeholder="••••••••">
+                    <button type="button" onclick="togglePassword('{{ form.password1.id_for_label }}', this)"
+                        class="absolute inset-y-0 right-0 px-3 flex items-center text-slate-500 hover:text-slate-300 transition-colors">
+                        <svg class="w-5 h-5 eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                        <svg class="w-5 h-5 eye-off-icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" /></svg>
+                    </button>
+                </div>
+                <p class="text-xs text-slate-500 mt-1" data-tr="En az 8 karakter, sayı veya harf içermeli." data-en="Must contain at least 8 characters, a number, or a letter.">En az 8 karakter, sayı veya harf içermeli.</p>
+            </div>
+
+            <div>
+                <label for="{{ form.password2.id_for_label }}"
+                    class="block text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1.5"
+                    data-tr="Şifreyi Tekrarla" data-en="Repeat Password">Şifreyi Tekrarla</label>
+                <div class="relative">
+                    <input type="password" name="password2" id="{{ form.password2.id_for_label }}" required
+                        autocomplete="new-password"
+                        class="w-full px-4 py-3 bg-[#0F172A] border {% if form.password2.errors %}border-red-500/50{% else %}border-slate-700/50{% endif %} rounded-xl text-slate-200 placeholder-slate-600 text-sm focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500/30 transition-colors pr-12"
+                        placeholder="••••••••">
+                    <button type="button" onclick="togglePassword('{{ form.password2.id_for_label }}', this)"
+                        class="absolute inset-y-0 right-0 px-3 flex items-center text-slate-500 hover:text-slate-300 transition-colors">
+                        <svg class="w-5 h-5 eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                        <svg class="w-5 h-5 eye-off-icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" /></svg>
+                    </button>
+                </div>
+            </div>
+
+            <button type="submit"
+                class="btn-glow w-full py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-sky-500 to-cyan-500 shadow-lg shadow-sky-500/25 hover:shadow-sky-500/45 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer mt-2"
+                data-tr="Hesap Oluştur" data-en="Create Account">
+                Hesap Oluştur
+            </button>
+        </form>
+
+        <div class="mt-6 text-center">
+            <p class="text-sm text-slate-500">
+                <span data-tr="Zaten hesabın var mı?" data-en="Already have an account?">Zaten hesabın var mı?</span>
+                <a href="{% url 'polls:user_switch' %}"
+                    class="text-sky-400 hover:text-sky-300 font-medium ml-1 cursor-pointer" data-tr="Giriş Yap" data-en="Log In">Giriş Yap</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
