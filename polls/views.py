@@ -10,6 +10,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.views import generic
 
+from django.utils.translation import gettext_lazy as _
 from .models import Choice, Question, Survey
 
 
@@ -59,7 +60,7 @@ def survey_question(request, survey_id, question_id=None):
     if not questions:
         return render(request, "polls/detail.html", {
             "survey": survey,
-            "error_message": "Bu ankette henüz soru yok.",
+            "error_message": _("This survey has no questions yet."),
         })
 
     if question_id is None:
@@ -109,7 +110,7 @@ def survey_vote(request, survey_id, question_id):
             "next_q": next_q,
             "q_num": idx + 1,
             "q_total": len(questions),
-            "error_message": "Bu anketin süresi dolmuştur, artık oy veremezsiniz.",
+            "error_message": _("This survey has expired; you can no longer vote."),
         })
 
     if not selected_choice:
@@ -120,7 +121,7 @@ def survey_vote(request, survey_id, question_id):
             "next_q": next_q,
             "q_num": idx + 1,
             "q_total": len(questions),
-            "error_message": "Bir seçenek seçmediniz.",
+            "error_message": _("You didn't select a choice."),
         })
 
     selected_choice.votes = F("votes") + 1
@@ -201,7 +202,7 @@ def login_view(request):
             login(request, user)
             return redirect(request.GET.get("next", "polls:index"))
         else:
-            error = "Kullanıcı adı veya şifre hatalı."
+            error = _("Invalid username or password.")
     else:
         form = AuthenticationForm()
     return render(request, "polls/login.html", {"form": form, "error": error})
@@ -284,7 +285,7 @@ def vote(request, question_id):
     except (KeyError, Choice.DoesNotExist):
         return render(request, "polls/detail.html", {
             "question": question,
-            "error_message": "Bir seçenek seçmediniz.",
+            "error_message": _("You didn't select a choice."),
         })
     selected_choice.votes = F("votes") + 1
     selected_choice.save()
