@@ -3,7 +3,7 @@ import datetime
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
-from django.db.models import F, Sum, ExpressionWrapper, Q, Case, When, BooleanField
+from django.db.models import F, Sum, ExpressionWrapper, Q, Case, When, BooleanField, Exists, OuterRef
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
@@ -38,9 +38,19 @@ class SurveyListView(generic.ListView):
                 default=False,
                 output_field=BooleanField(),
             )
-        ).order_by("is_over", "-pub_date")
+        )
 
-        return surveys
+        if self.request.user.is_authenticated:
+            surveys = surveys.annotate(
+                has_completed=Exists(
+                    UserSurveyParticipation.objects.filter(
+                        user=self.request.user,
+                        survey=OuterRef('pk')
+                    )
+                )
+            )
+
+        return surveys.order_by("is_over", "-pub_date")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

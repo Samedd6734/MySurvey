@@ -141,16 +141,23 @@
                     {% endif %}
                 </div>
                 
-                {% if survey.is_expired %}
-                <span class="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-400 group-hover:gap-2.5 transition-all duration-300"
-                      data-tr="Sonuçlar" data-en="Results">Sonuçlar
+                {% if survey.has_completed %}
+                <span class="inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-400 group-hover:gap-2.5 transition-all duration-300">
+                    <span data-tr="Anket Tamamlandı" data-en="Survey Completed">Anket Tamamlandı</span>
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                </span>
+                {% elif survey.is_expired %}
+                <span class="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-400 group-hover:gap-2.5 transition-all duration-300">
+                    <span data-tr="Sonuçlar" data-en="Results">Sonuçlar</span>
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                     </svg>
                 </span>
                 {% else %}
-                <span class="inline-flex items-center gap-1.5 text-sm font-semibold text-sky-400 group-hover:gap-2.5 transition-all duration-300"
-                      data-tr="Katıl" data-en="Join">Katıl
+                <span class="inline-flex items-center gap-1.5 text-sm font-semibold text-sky-400 group-hover:gap-2.5 transition-all duration-300">
+                    <span data-tr="Katıl" data-en="Join">Katıl</span>
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                     </svg>
