@@ -43,11 +43,12 @@ translations = [
     ("description",                             "Açıklama"),
     ("publication date",                        "Yayın tarihi"),
     ("date published",                          "Yayın tarihi"),
-    ("question text",                           "Soru metni"),
+    ("question text",                           "Soru"),
     ("question count",                          "Soru sayısı"),
     ("published recently?",                     "Yakın zamanda yayınlandı mı?"),
-    ("choice text",                             "Seçenek metni"),
+    ("choice text",                             "Şık (Seçenek)"),
     ("votes",                                   "Oy sayısı"),
+    ("end date",                                "Bitiş tarihi"),
 
     # ── İşlem Butonları ──────────────────────────────────────────────────
     ("Add",                                     "Ekle"),
@@ -151,6 +152,9 @@ translations = [
     ("Change message",                          "Değişiklik mesajı"),
     ("Action flag",                             "İşlem türü"),
     ("%(count)d selected",                      "%(count)d seçildi"),
+    ("Date Settings (Scheduling)",              "Tarih Ayarları (Zamanlama)"),
+    ("The end date is optional. If left empty, the survey will run indefinitely.",
+                                                "Bitiş tarihi isteğe bağlıdır. Boş bırakılırsa anket süresiz olarak çalışacaktır."),
 ]
 
 # ─── Turkish .po / .mo ────────────────────────────────────────────────────

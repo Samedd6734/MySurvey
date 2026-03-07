@@ -98,6 +98,9 @@ msgstr "choice text"
 msgid "votes"
 msgstr "votes"
 
+msgid "end date"
+msgstr "end date"
+
 msgid "Add"
 msgstr "Add"
 
@@ -340,3 +343,11 @@ msgstr "Action flag"
 
 msgid "%(count)d selected"
 msgstr "%(count)d selected"
+
+msgid "Date Settings (Scheduling)"
+msgstr "Date Settings (Scheduling)"
+
+msgid ""
+"The end date is optional. If left empty, the survey will run indefinitely."
+msgstr ""
+"The end date is optional. If left empty, the survey will run indefinitely."

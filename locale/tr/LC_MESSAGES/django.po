@@ -84,7 +84,7 @@ msgid "date published"
 msgstr "Yayın tarihi"
 
 msgid "question text"
-msgstr "Soru metni"
+msgstr "Soru"
 
 msgid "question count"
 msgstr "Soru sayısı"
@@ -93,10 +93,13 @@ msgid "published recently?"
 msgstr "Yakın zamanda yayınlandı mı?"
 
 msgid "choice text"
-msgstr "Seçenek metni"
+msgstr "Şık (Seçenek)"
 
 msgid "votes"
 msgstr "Oy sayısı"
+
+msgid "end date"
+msgstr "Bitiş tarihi"
 
 msgid "Add"
 msgstr "Ekle"
@@ -340,3 +343,12 @@ msgstr "İşlem türü"
 
 msgid "%(count)d selected"
 msgstr "%(count)d seçildi"
+
+msgid "Date Settings (Scheduling)"
+msgstr "Tarih Ayarları (Zamanlama)"
+
+msgid ""
+"The end date is optional. If left empty, the survey will run indefinitely."
+msgstr ""
+"Bitiş tarihi isteğe bağlıdır. Boş bırakılırsa anket süresiz olarak "
+"çalışacaktır."
