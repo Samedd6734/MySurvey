@@ -10,29 +10,36 @@ from .models import Choice, Question, Survey
 
 class ChoiceInline(nested_admin.NestedTabularInline):
     model = Choice
-    extra = 3
-    fields = ["choice_text", "votes"]
-
+    extra = 3  # Varsayılan 3 şık textboxı aç
+    exclude = ["votes"]  # Admin oy sayısını değiştiremesin
 
 class QuestionInline(nested_admin.NestedStackedInline):
     model = Question
-    extra = 2
+    extra = 1  # Sayfa açıldığında 1 soru textboxı hazır gelsin
     fields = ["question_text"]
     inlines = [ChoiceInline]
     show_change_link = False
-
 
 # ─── Survey Admin ──────────────────────────────────────────────────────────
 
 class SurveyAdmin(nested_admin.NestedModelAdmin):
     fieldsets = [
         (None, {"fields": ["title", "description"]}),
-        (_("publication date"), {"fields": ["pub_date", "end_date"], "classes": ["collapse"]}),
+        ("Tarih Ayarları (Zamanlama)", {
+            "fields": [("pub_date", "end_date")],
+            "description": "Anketin başlangıç tarihini seçin. Bitiş tarihi zorunlu değildir, eğer boş bırakırsanız anket süresiz olarak açık kalır."
+        }),
     ]
     inlines = [QuestionInline]
     list_display = ["title", "pub_date", "end_date", "question_count", "was_published_recently"]
     list_filter = ["pub_date", "end_date"]
     search_fields = ["title"]
+
+    class Media:
+        js = ("polls/js/admin_override.js",)
+        css = {
+            "all": ("polls/css/admin_override.css",)
+        }
 
     def question_count(self, obj):
         return obj.questions.count()

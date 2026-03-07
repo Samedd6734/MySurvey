@@ -10,7 +10,12 @@ class Survey(models.Model):
     title = models.CharField(max_length=200, verbose_name=_("title"))
     description = models.TextField(blank=True, verbose_name=_("description"))
     pub_date = models.DateTimeField(_("publication date"))
-    end_date = models.DateTimeField(null=True, blank=True, verbose_name=_("end date"))
+    end_date = models.DateTimeField(
+        null=True, 
+        blank=True, 
+        verbose_name=_("end date"),
+        help_text=_("Bitiş tarihi zorunlu değildir. Boş bırakırsanız anket süresiz olur.")
+    )
 
     class Meta:
         ordering = ["-pub_date"]

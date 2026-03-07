@@ -1,0 +1,229 @@
+/* --- BUBBLE / CARD LAYOUT FOR QUESTIONS --- */
+/* Her bir soru bloğunu (Question) ayrı bir balon (card) içerisine alıyoruz */
+.djnesting-stacked>.inline-related {
+    background-color: var(--body-bg, #ffffff) !important;
+    border: 1px solid var(--border-color, #e5e7eb) !important;
+    border-radius: 12px !important;
+    padding: 24px !important;
+    margin-bottom: 32px !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+    position: relative;
+    overflow: hidden;
+    /* Taşmaları önlemek için */
+}
+
+/* Koyu Tema Desteği */
+[data-theme="dark"] .djnesting-stacked>.inline-related {
+    background-color: #1f2937 !important;
+    /* Tailwind gray-800 */
+    border-color: #374151 !important;
+    /* Tailwind gray-700 */
+}
+
+/* Soru Başlığı ("Soru: #1") Tasarımı */
+.djnesting-stacked>.inline-related>h3 {
+    margin: -24px -24px 20px -24px !important;
+    padding: 16px 24px !important;
+    background-color: rgba(0, 0, 0, 0.03) !important;
+    border-bottom: 1px solid var(--border-color, #e5e7eb) !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    position: relative;
+    /* İçindeki trash butonu için */
+}
+
+[data-theme="dark"] .djnesting-stacked>.inline-related>h3 {
+    background-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+/* --- TRASH ICON FIX & CLEANUP --- */
+
+/* "Sil" veya "Delete" thead metinlerini ve kolon başlığını görünmez yap */
+th.delete {
+    color: transparent !important;
+    font-size: 0 !important;
+    width: 48px !important;
+    padding: 0 !important;
+}
+
+th.delete::before {
+    content: none !important;
+}
+
+td.delete {
+    text-align: center !important;
+    vertical-align: middle !important;
+}
+
+/* Standart Django checkbox'ını ve etiketini GİZLE */
+.delete input[type="checkbox"],
+.delete label {
+    display: none !important;
+}
+
+/* Django'nun varsayılan X (çarpı) arka planlarını KESİNLİKLE kaldırıyoruz */
+a.djnesting-remove,
+a.inline-deletelink {
+    background-image: none !important;
+    text-indent: -9999px !important;
+    overflow: hidden !important;
+}
+
+/* Ekstra garanti: Varsa ::before elemanlarını (başka css'lerden gelen ikonları) gizle */
+a.djnesting-remove::before,
+a.inline-deletelink::before {
+    display: none !important;
+    background-image: none !important;
+}
+
+/* Hem JS butonumuz hem de NestedAdmin kaldırma butonu için TEMİZ ALTYAPI */
+.custom-trash-btn,
+a.djnesting-remove,
+a.inline-deletelink {
+    display: inline-flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 32px !important;
+    height: 32px !important;
+    background-color: transparent !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    border: 1px solid transparent !important;
+    transition: all 0.2s ease !important;
+    text-decoration: none !important;
+    position: relative !important;
+}
+
+.custom-trash-btn:hover,
+a.djnesting-remove:hover,
+a.inline-deletelink:hover {
+    background-color: rgba(239, 68, 68, 0.1) !important;
+    /* Hafif kırmızımsı hover */
+    border-color: rgba(239, 68, 68, 0.2) !important;
+}
+
+/* JS ile eklediğimiz SVG tasarımı (Daha tok ve belirgin çöp kutusu) */
+.custom-trash-btn svg {
+    width: 18px;
+    height: 18px;
+    stroke: #9ca3af;
+    /* gray-400 */
+    stroke-width: 2;
+    fill: none;
+    transition: stroke 0.2s ease;
+}
+
+.custom-trash-btn:hover svg {
+    stroke: #ef4444;
+    /* red-500, hover durumunda kırmızlaşır */
+}
+
+/* NestedAdmin içindeki varsayılan butonlar için SVG MASKESİ (Eski X yerine çöp kutusu çizecek) */
+a.djnesting-remove::after,
+a.inline-deletelink::after {
+    content: "";
+    /* Boş içerik, maske için gerekli */
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background-color: #9ca3af;
+    /* gray-400 rengi SVG formuna girer */
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' stroke='black' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19 6l-1.2 14.4A2 2 0 0 1 15.8 22H8.2a2 2 0 0 1-2-1.6L5 6m4 0V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2m-5 5v6m4-6v6'/%3E%3Cpath d='M3 6h18'/%3E%3C/svg%3E") no-repeat center;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' stroke='black' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19 6l-1.2 14.4A2 2 0 0 1 15.8 22H8.2a2 2 0 0 1-2-1.6L5 6m4 0V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2m-5 5v6m4-6v6'/%3E%3Cpath d='M3 6h18'/%3E%3C/svg%3E") no-repeat center;
+    background-size: cover;
+    transition: background-color 0.2s ease;
+}
+
+/* Üzerine gelindiğinde svg maskesinin rengi kırmızı olsun */
+a.djnesting-remove:hover::after,
+a.inline-deletelink:hover::after {
+    background-color: #ef4444;
+    /* red-500 */
+}
+
+/* Soru Başlığındaki silme butonu tam sağ üste otursun */
+.inline-related>h3 .delete {
+    position: absolute;
+    top: 50%;
+    right: 24px;
+    transform: translateY(-50%);
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+/* --- BUTTON SEPARATION (Soru vs Seçenek Ekle) --- */
+.djnesting-add {
+    padding: 0 !important;
+    border: none !important;
+    margin: 15px 0 !important;
+}
+
+.djnesting-add a {
+    display: inline-flex !important;
+    align-items: center !important;
+    padding: 10px 20px !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    transition: all 0.2s ease !important;
+    font-size: 14px !important;
+}
+
+/* MAVİ VE BÜYÜK: "Başka bir Soru ekle" Butonu (Ana formun en altındaki) */
+/* Bu balonların dışındadır, bambaşka bir konteyner oluşturur */
+.djnesting-stacked>.djnesting-add {
+    margin-top: 40px !important;
+    padding: 40px 24px !important;
+    border: 2px dashed #4b5563 !important;
+    /* Dışında kesik çizgili belirgin bir alan */
+    border-radius: 12px !important;
+    text-align: center !important;
+    background-color: rgba(255, 255, 255, 0.02) !important;
+}
+
+.djnesting-stacked>.djnesting-add a {
+    background-color: #2563eb !important;
+    /* Blue-600 */
+    color: #ffffff !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+    font-size: 15px !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 14px 28px !important;
+}
+
+.djnesting-stacked>.djnesting-add a:hover {
+    background-color: #1d4ed8 !important;
+    /* Blue-700 */
+    transform: translateY(-1px);
+    box-shadow: 0 6px 8px -1px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* GRİ VE SADE: "Başka bir Seçenek ekle" Butonu (Baloncuğun içindeki seçenek ekleme) */
+.djnesting-tabular>.djnesting-add {
+    text-align: left !important;
+    margin-top: 15px !important;
+}
+
+.djnesting-tabular>.djnesting-add a {
+    background-color: #374151 !important;
+    /* Gray-700 */
+    color: #f3f4f6 !important;
+    border: 1px solid #4b5563 !important;
+    font-size: 13px !important;
+}
+
+.djnesting-tabular>.djnesting-add a:hover {
+    background-color: #4b5563 !important;
+}
+
+/* Silinmek üzere işaretlenen satır efketi */
+.row-marked-for-delete {
+    opacity: 0.4 !important;
+    background-color: rgba(239, 68, 68, 0.05) !important;
+    /* Seçildiğinde çok hafif kırmızı olur */
+    pointer-events: none !important;
+    /* Tıklamalar iptal */
+}
