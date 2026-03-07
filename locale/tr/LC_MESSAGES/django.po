@@ -382,3 +382,6 @@ msgstr "Bu anketi zaten tamamladınız."
 
 msgid "You have successfully completed the survey."
 msgstr "Anketi başarıyla tamamladınız."
+
+msgid "Back to Surveys"
+msgstr "Anketlere Dön"

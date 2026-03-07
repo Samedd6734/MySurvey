@@ -165,6 +165,7 @@ translations = [
                                                 "Bitiş tarihi isteğe bağlıdır. Boş bırakılırsa anket süresiz olarak çalışacaktır."),
     ("You have already completed this survey.", "Bu anketi zaten tamamladınız."),
     ("You have successfully completed the survey.", "Anketi başarıyla tamamladınız."),
+    ("Back to Surveys",                         "Anketlere Dön"),
 ]
 
 # ─── Turkish .po / .mo ────────────────────────────────────────────────────

@@ -381,3 +381,6 @@ msgstr "You have already completed this survey."
 
 msgid "You have successfully completed the survey."
 msgstr "You have successfully completed the survey."
+
+msgid "Back to Surveys"
+msgstr "Back to Surveys"
