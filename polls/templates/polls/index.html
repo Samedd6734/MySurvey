@@ -128,7 +128,7 @@
                             <path
                                 d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
-                        <span class="text-xs text-ink-faint">{{ survey.pub_date|date:"d M Y" }}</span>
+                        <span class="text-xs text-ink-faint"><span data-tr="Başlangıç:" data-en="Start:">Başlangıç:</span> {{ survey.pub_date|date:"d.m.Y" }}</span>
                     </div>
                     {% if survey.end_date %}
                     <div class="flex items-center gap-2">
@@ -136,7 +136,7 @@
                             <circle cx="12" cy="12" r="10" />
                             <polyline points="12 6 12 12 16 14" />
                         </svg>
-                        <span class="text-[11px] font-medium {{ survey.is_expired|yesno:'text-red-400/80,text-amber-400/90' }}">Bitiş: {{ survey.end_date|date:"d M Y" }}</span>
+                        <span class="text-[11px] font-medium {{ survey.is_expired|yesno:'text-red-400/80,text-amber-400/90' }}"><span data-tr="Bitiş:" data-en="End:">Bitiş:</span> {{ survey.end_date|date:"d.m.Y" }}</span>
                     </div>
                     {% endif %}
                 </div>
