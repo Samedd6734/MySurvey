@@ -222,6 +222,11 @@ def survey_results(request, survey_id):
 @require_POST
 def survey_finish(request, survey_id):
     survey = get_object_or_404(Survey, pk=survey_id)
+    
+    if survey.is_expired:
+        messages.error(request, _("This survey has expired; you can no longer vote."))
+        return HttpResponseRedirect(reverse("polls:survey_results", args=(survey.id,)))
+
     UserSurveyParticipation.objects.get_or_create(user=request.user, survey=survey)
     messages.success(request, _("You have successfully completed the survey."))
     return HttpResponseRedirect(reverse("polls:survey_results", args=(survey.id,)))

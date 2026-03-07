@@ -32,7 +32,7 @@
             </div>
             
             <div class="flex flex-wrap items-center gap-3 mt-4 md:mt-0">
-                {% if not has_completed %}
+                {% if not survey.is_expired and not has_completed %}
                 <a href="{% url 'polls:survey_start' survey.id %}"
                    class="btn-glow inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-sky-500 to-cyan-500 shadow-lg shadow-sky-500/25 shrink-0 transition-transform active:scale-95">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -52,12 +52,14 @@
                     </button>
                 </form>
                 {% else %}
-                <div class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-bold shadow-sm">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span data-tr="Anket Tamamlandı" data-en="Survey Completed">Anket Tamamlandı</span>
-                </div>
+                    {% if has_completed %}
+                    <div class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-bold shadow-sm">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span data-tr="Anket Tamamlandı" data-en="Survey Completed">Anket Tamamlandı</span>
+                    </div>
+                    {% endif %}
                 <a href="{% url 'polls:index' %}"
                    class="btn-glow inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-sky-500 to-cyan-500 shadow-lg shadow-sky-500/25 shrink-0 transition-transform active:scale-95">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
