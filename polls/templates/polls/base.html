@@ -593,6 +593,11 @@
                     ? el.getAttribute('data-en')
                     : el.getAttribute('data-tr');
             });
+            document.querySelectorAll('[data-tr-placeholder]').forEach(el => {
+                el.placeholder = lang === 'en'
+                    ? el.getAttribute('data-en-placeholder')
+                    : el.getAttribute('data-tr-placeholder');
+            });
             const label  = document.getElementById('lang-label');
             const labelM = document.getElementById('lang-label-m');
             if (label)  label.textContent  = lang === 'en' ? 'EN' : 'TR';

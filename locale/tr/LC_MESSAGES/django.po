@@ -344,6 +344,18 @@ msgstr "İşlem türü"
 msgid "%(count)d selected"
 msgstr "%(count)d seçildi"
 
+msgid "This survey has no questions yet."
+msgstr "Bu ankette henüz soru yok."
+
+msgid "This survey has expired; you can no longer vote."
+msgstr "Bu anketin süresi dolmuştur, artık oy veremezsiniz."
+
+msgid "You didn't select a choice."
+msgstr "Bir seçenek seçmediniz."
+
+msgid "Invalid username or password."
+msgstr "Kullanıcı adı veya şifre hatalı."
+
 msgid "Date Settings (Scheduling)"
 msgstr "Tarih Ayarları (Zamanlama)"
 

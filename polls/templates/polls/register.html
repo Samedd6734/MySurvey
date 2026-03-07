@@ -67,7 +67,8 @@
                 <input type="text" name="username" id="{{ form.username.id_for_label }}" required
                     autocomplete="username" value="{{ form.username.value|default:'' }}"
                     class="w-full px-4 py-3 bg-[#0F172A] border {% if form.username.errors %}border-red-500/50{% else %}border-slate-700/50{% endif %} rounded-xl text-slate-200 placeholder-slate-600 text-sm focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500/30 transition-colors"
-                    placeholder="kullanıcı_adı">
+                    data-tr-placeholder="Kullanıcı Adı" data-en-placeholder="Username"
+                    placeholder="Kullanıcı Adı">
             </div>
 
             <div>
