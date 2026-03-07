@@ -25,9 +25,9 @@ class QuestionInline(nested_admin.NestedStackedInline):
 class SurveyAdmin(nested_admin.NestedModelAdmin):
     fieldsets = [
         (None, {"fields": ["title", "description"]}),
-        ("Tarih Ayarları (Zamanlama)", {
+        (_("Date Settings (Scheduling)"), {
             "fields": [("pub_date", "end_date")],
-            "description": "Anketin başlangıç tarihini seçin. Bitiş tarihi zorunlu değildir, eğer boş bırakırsanız anket süresiz olarak açık kalır."
+            "description": _("The end date is optional. If left empty, the survey will run indefinitely.")
         }),
     ]
     inlines = [QuestionInline]

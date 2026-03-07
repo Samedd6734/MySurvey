@@ -14,7 +14,7 @@ class Survey(models.Model):
         null=True, 
         blank=True, 
         verbose_name=_("end date"),
-        help_text=_("Bitiş tarihi zorunlu değildir. Boş bırakırsanız anket süresiz olur.")
+        help_text=_("The end date is optional. If left empty, the survey will run indefinitely.")
     )
 
     class Meta:
