@@ -114,28 +114,28 @@
                             {% endif %}
                         </div>
                         <div class="flex items-baseline gap-2">
-                            <span class="text-lg font-display font-bold {{ item.is_leading|yesno:'text-sky-400,text-slate-500' }} percentage-counter" data-target="{{ item.percentage|stringformat:'.1f' }}">0%</span>
-                            <span class="text-xs text-slate-500 font-medium tracking-wide">({{ item.choice.votes }} <span data-tr="oy" data-en="votes">oy</span>)</span>
+                            <span class="text-lg font-display font-bold {{ item.is_leading|yesno:'text-sky-400,text-slate-500' }} percentage-counter tabular-nums min-w-[4rem] text-right" data-target="{{ item.percentage|stringformat:'.1f' }}">0%</span>
+                            <span class="text-xs text-slate-500 font-medium tracking-wide whitespace-nowrap">({{ item.choice.votes }} <span data-tr="oy" data-en="votes">oy</span>)</span>
                         </div>
                     </div>
                     
                     <!-- Progress Bar Track -->
-                    <div class="h-3 w-full bg-[#0F172A] rounded-full overflow-hidden shadow-inner flex items-center p-[2px] border border-slate-700/30">
+                    <div class="h-3 w-full bg-[#0F172A] rounded-full overflow-hidden shadow-inner flex items-center p-[2px] border border-slate-700/30 transform-gpu">
                         {% if item.is_leading %}
                         <!-- Leading bar: bright gradient + glow -->
-                        <div class="h-full rounded-full w-0 shrink-0 relative overflow-hidden
+                        <div class="h-full rounded-full w-0 shrink-0 relative overflow-hidden transform-gpu will-change-[width]
                                     bg-gradient-to-r from-sky-500 to-cyan-400
                                     shadow-[0_0_12px_rgba(14,165,233,0.45)]
-                                    transition-all duration-[1400ms] ease-out"
+                                    transition-[width] duration-[1400ms] ease-out"
                              data-width="{{ item.percentage|stringformat:'.1f' }}%">
-                            <div class="absolute inset-0 w-[200%] bg-gradient-to-r from-transparent via-white/25 to-transparent translate-x-[-100%] shimmer-effect"></div>
+                            <div class="absolute inset-0 w-[200%] bg-gradient-to-r from-transparent via-white/25 to-transparent translate-x-[-100%] shimmer-effect transform-gpu"></div>
                         </div>
                         {% else %}
                         <!-- Non-leading bar: dim/muted slate gradient -->
-                        <div class="h-full rounded-full w-0 shrink-0 relative overflow-hidden
+                        <div class="h-full rounded-full w-0 shrink-0 relative overflow-hidden transform-gpu will-change-[width]
                                     bg-gradient-to-r from-slate-700 to-slate-600
                                     opacity-60
-                                    transition-all duration-[1400ms] ease-out"
+                                    transition-[width] duration-[1400ms] ease-out"
                              data-width="{{ item.percentage|stringformat:'.1f' }}%">
                         </div>
                         {% endif %}
