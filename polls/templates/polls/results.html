@@ -18,9 +18,9 @@
             <span class="text-slate-500" data-tr="Sonuçlar" data-en="Results">Sonuçlar</span>
         </div>
 
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 content-layer">
-            <div>
-                <h1 class="font-display text-3xl md:text-4xl font-extrabold text-slate-100 mb-2 leading-tight">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 content-layer flex-wrap">
+            <div class="flex-1 min-w-0 pr-4">
+                <h1 class="font-display text-3xl md:text-4xl font-extrabold text-slate-100 mb-2 leading-tight break-words">
                     {{ survey.title }}
                 </h1>
                 <p class="text-slate-400 flex items-center gap-2 text-sm font-medium">
@@ -31,13 +31,23 @@
                 </p>
             </div>
             
-            <a href="{% url 'polls:survey_start' survey.id %}"
-               class="btn-glow inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-sky-500 to-cyan-500 shadow-lg shadow-sky-500/25 shrink-0 transition-transform active:scale-95">
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-                <span data-tr="Tekrar Oyla" data-en="Vote Again">Tekrar Oyla</span>
-            </a>
+            <div class="flex flex-wrap items-center gap-3 mt-4 md:mt-0">
+                <a href="{% url 'polls:survey_start' survey.id %}"
+                   class="btn-glow inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-sky-500 to-cyan-500 shadow-lg shadow-sky-500/25 shrink-0 transition-transform active:scale-95">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    <span data-tr="Tekrar Oyla" data-en="Vote Again">Tekrar Oyla</span>
+                </a>
+                
+                <a href="{% url 'polls:index' %}"
+                   class="btn-glow inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-emerald-500 to-teal-400 shadow-lg shadow-emerald-500/25 shrink-0 transition-transform active:scale-95">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span data-tr="Bitir" data-en="Finish">Bitir</span>
+                </a>
+            </div>
         </div>
     </div>
 
@@ -69,10 +79,10 @@
             {% else %}
             <div class="space-y-5 relative">
                 {% for item in qdata.choices_with_pct %}
-                <div class="relative">
+                <div class="relative group/bar">
                     <div class="flex items-end justify-between mb-2">
                         <div class="flex items-center gap-2">
-                            <span class="text-sm font-semibold {{ item.is_leading|yesno:'text-slate-100,text-slate-300' }}">{{ item.choice.choice_text }}</span>
+                            <span class="text-sm font-semibold {{ item.is_leading|yesno:'text-slate-100,text-slate-400' }} transition-colors duration-300">{{ item.choice.choice_text }}</span>
                             {% if item.is_leading %}
                             <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[10px] font-bold uppercase tracking-wider shadow-sm">
                                 <svg class="w-2.5 h-2.5" viewBox="0 0 24 24" fill="currentColor">
@@ -83,22 +93,36 @@
                             {% endif %}
                         </div>
                         <div class="flex items-baseline gap-2">
-                            <span class="text-lg font-display font-bold {{ item.is_leading|yesno:'text-sky-400,text-slate-400' }} percentage-counter" data-target="{{ item.percentage|stringformat:'.1f' }}">0%</span>
+                            <span class="text-lg font-display font-bold {{ item.is_leading|yesno:'text-sky-400,text-slate-500' }} percentage-counter" data-target="{{ item.percentage|stringformat:'.1f' }}">0%</span>
                             <span class="text-xs text-slate-500 font-medium tracking-wide">({{ item.choice.votes }} <span data-tr="oy" data-en="votes">oy</span>)</span>
                         </div>
                     </div>
                     
                     <!-- Progress Bar Track -->
                     <div class="h-3 w-full bg-[#0F172A] rounded-full overflow-hidden shadow-inner flex items-center p-[2px] border border-slate-700/30">
-                        <!-- Progress Bar Fill -->
-                        <div class="h-full rounded-full transition-all duration-[1500ms] ease-out w-0 relative overflow-hidden shrink-0 {{ item.is_leading|yesno:'bg-gradient-to-r from-sky-500 to-cyan-400 shadow-[0_0_12px_rgba(14,165,233,0.4)],bg-gradient-to-r from-slate-600 to-slate-500 shadow-sm' }}"
+                        {% if item.is_leading %}
+                        <!-- Leading bar: bright gradient + glow -->
+                        <div class="h-full rounded-full w-0 shrink-0 relative overflow-hidden
+                                    bg-gradient-to-r from-sky-500 to-cyan-400
+                                    shadow-[0_0_12px_rgba(14,165,233,0.45)]
+                                    transition-all duration-[1400ms] ease-out"
                              data-width="{{ item.percentage|stringformat:'.1f' }}%">
-                            <div class="absolute inset-0 w-[200%] bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] shimmer-effect"></div>
+                            <div class="absolute inset-0 w-[200%] bg-gradient-to-r from-transparent via-white/25 to-transparent translate-x-[-100%] shimmer-effect"></div>
                         </div>
+                        {% else %}
+                        <!-- Non-leading bar: dim/muted slate gradient -->
+                        <div class="h-full rounded-full w-0 shrink-0 relative overflow-hidden
+                                    bg-gradient-to-r from-slate-700 to-slate-600
+                                    opacity-60
+                                    transition-all duration-[1400ms] ease-out"
+                             data-width="{{ item.percentage|stringformat:'.1f' }}%">
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
                 {% endfor %}
             </div>
+
             {% endif %}
         </div>
         {% endfor %}

@@ -21,6 +21,22 @@
             <h1 class="font-display text-2xl md:text-3xl font-extrabold text-slate-100 leading-tight mb-1">
                 {{ survey.title }}
             </h1>
+            {% if survey.end_date %}
+            <p class="text-xs md:text-sm mt-2 flex items-center gap-2 font-medium {{ survey.is_expired|yesno:'text-red-400,text-amber-400' }}">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10" />
+                    <polyline points="12 6 12 12 16 14" />
+                </svg>
+                <span>
+                    {% if survey.is_expired %}
+                    <span data-tr="Süresi doldu:" data-en="Expired:">Süresi doldu:</span>
+                    {% else %}
+                    <span data-tr="Son katılım:" data-en="Deadline:">Son katılım:</span>
+                    {% endif %}
+                    {{ survey.end_date|date:"d M Y, H:i" }}
+                </span>
+            </p>
+            {% endif %}
         </div>
         <span class="inline-flex items-center px-3 py-1.5 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-400 text-xs font-semibold flex-shrink-0">
             <span data-tr="Soru" data-en="Question">Soru</span> {{ q_num }} / {{ q_total }}
@@ -52,11 +68,12 @@
             {% csrf_token %}
             <div class="space-y-3">
                 {% for choice in question.choice_set.all %}
-                <label class="choice-label flex items-center gap-4 p-4 rounded-xl border cursor-pointer group glow-border">
+                <label class="choice-label flex items-center gap-4 p-4 rounded-xl border {{ survey.is_expired|yesno:'cursor-not-allowed opacity-60 bg-slate-800/20,cursor-pointer group glow-border' }}">
                     <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}"
-                        class="w-5 h-5 text-sky-500 border-2 border-slate-600 focus:ring-sky-500/50"
+                        {{ survey.is_expired|yesno:'disabled,' }}
+                        class="w-5 h-5 text-sky-500 border-2 border-slate-600 focus:ring-sky-500/50 disabled:text-slate-500 disabled:border-slate-500"
                         style="accent-color: #0EA5E9;">
-                    <span class="text-base font-medium text-slate-100 group-hover:text-sky-300 transition-colors">
+                    <span class="text-base font-medium text-slate-100 {{ survey.is_expired|yesno:',group-hover:text-sky-300 transition-colors' }}">
                         {{ choice.choice_text }}
                     </span>
                 </label>
@@ -76,7 +93,15 @@
                     </a>
                     {% endif %}
                 </div>
-                
+                {% if survey.is_expired %}
+                <a href="{% url 'polls:survey_results' survey.id %}"
+                   class="btn-glow inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-emerald-500 to-teal-400 shadow-lg shadow-emerald-500/25 hover:-translate-y-0.5 transition-all">
+                    <span data-tr="Sonuçları Gör" data-en="View Results">Sonuçları Gör</span>
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                </a>
+                {% else %}
                 <button type="submit"
                     class="btn-glow inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-sky-500 to-cyan-500 shadow-lg shadow-sky-500/25 hover:shadow-sky-500/40 hover:-translate-y-0.5 transition-all">
                     {% if next_q %}
@@ -88,6 +113,7 @@
                     </svg>
                     {% endif %}
                 </button>
+                {% endif %}
             </div>
         </form>
         {% endif %}

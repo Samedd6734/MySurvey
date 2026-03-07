@@ -10,6 +10,7 @@ class Survey(models.Model):
     title = models.CharField(max_length=200, verbose_name=_("title"))
     description = models.TextField(blank=True, verbose_name=_("description"))
     pub_date = models.DateTimeField(_("publication date"))
+    end_date = models.DateTimeField(null=True, blank=True, verbose_name=_("end date"))
 
     class Meta:
         ordering = ["-pub_date"]
@@ -26,6 +27,12 @@ class Survey(models.Model):
     @property
     def question_count(self):
         return self.questions.count()
+
+    @property
+    def is_expired(self):
+        if self.end_date:
+            return timezone.now() > self.end_date
+        return False
 
     @property
     def total_votes(self):

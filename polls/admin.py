@@ -27,11 +27,11 @@ class QuestionInline(nested_admin.NestedStackedInline):
 class SurveyAdmin(nested_admin.NestedModelAdmin):
     fieldsets = [
         (None, {"fields": ["title", "description"]}),
-        (_("publication date"), {"fields": ["pub_date"], "classes": ["collapse"]}),
+        (_("publication date"), {"fields": ["pub_date", "end_date"], "classes": ["collapse"]}),
     ]
     inlines = [QuestionInline]
-    list_display = ["title", "pub_date", "question_count", "was_published_recently"]
-    list_filter = ["pub_date"]
+    list_display = ["title", "pub_date", "end_date", "question_count", "was_published_recently"]
+    list_filter = ["pub_date", "end_date"]
     search_fields = ["title"]
 
     def question_count(self, obj):

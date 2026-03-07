@@ -2,7 +2,8 @@ import datetime
 
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.db.models import F
+from django.contrib.auth.models import User
+from django.db.models import F, Sum, ExpressionWrapper, Q, Case, When, BooleanField
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
@@ -19,9 +20,32 @@ from .models import Choice, Question, Survey
 class SurveyListView(generic.ListView):
     template_name = "polls/index.html"
     context_object_name = "survey_list"
+    paginate_by = 8
 
     def get_queryset(self):
-        return Survey.objects.filter(pub_date__lte=timezone.now())
+        now = timezone.now()
+        
+        # SQL Seviyesinde süresi bitmiş anketleri ayırt et (annotate)
+        # end_date var ve timezone.now()'dan küçükse => expired
+        surveys = Survey.objects.filter(pub_date__lte=now).annotate(
+            is_over=Case(
+                When(Q(end_date__isnull=False) & Q(end_date__lt=now), then=True),
+                default=False,
+                output_field=BooleanField(),
+            )
+        ).order_by("is_over", "-pub_date")
+
+        return surveys
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        now = timezone.now()
+        context["active_survey_count"] = Survey.objects.filter(
+            Q(end_date__isnull=True) | Q(end_date__gt=now)
+        ).count()
+        context["total_users"] = User.objects.count()
+        context["total_votes"] = Choice.objects.aggregate(s=Sum("votes"))["s"] or 0
+        return context
 
 
 # ─────────────────────────────────────────────
@@ -72,8 +96,23 @@ def survey_vote(request, survey_id, question_id):
     try:
         selected_choice = question.choice_set.get(pk=request.POST["choice"])
     except (KeyError, Choice.DoesNotExist):
-        prev_q = questions[idx - 1] if idx > 0 else None
-        next_q = questions[idx + 1] if idx < len(questions) - 1 else None
+        selected_choice = None
+
+    prev_q = questions[idx - 1] if idx > 0 else None
+    next_q = questions[idx + 1] if idx < len(questions) - 1 else None
+
+    if survey.is_expired:
+        return render(request, "polls/detail.html", {
+            "survey": survey,
+            "question": question,
+            "prev_q": prev_q,
+            "next_q": next_q,
+            "q_num": idx + 1,
+            "q_total": len(questions),
+            "error_message": "Bu anketin süresi dolmuştur, artık oy veremezsiniz.",
+        })
+
+    if not selected_choice:
         return render(request, "polls/detail.html", {
             "survey": survey,
             "question": question,
@@ -189,8 +228,17 @@ class IndexView(generic.ListView):
     template_name = "polls/index.html"
     context_object_name = "survey_list"
 
+    paginate_by = 8
+
     def get_queryset(self):
-        return Survey.objects.filter(pub_date__lte=timezone.now())
+        now = timezone.now()
+        return Survey.objects.filter(pub_date__lte=now).annotate(
+            is_over=Case(
+                When(Q(end_date__isnull=False) & Q(end_date__lt=now), then=True),
+                default=False,
+                output_field=BooleanField(),
+            )
+        ).order_by("is_over", "-pub_date")
 
 
 class DetailView(generic.DetailView):
