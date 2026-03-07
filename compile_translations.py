@@ -37,6 +37,10 @@ translations = [
     ("groups",                                  "Gruplar"),
     ("log entry",                               "Günlük kaydı"),
     ("log entries",                             "Günlük kayıtları"),
+    ("user vote",                               "Kullanıcı oyu"),
+    ("user votes",                              "Kullanıcı oyları"),
+    ("user survey participation",               "Kullanıcı anket katılımı"),
+    ("user survey participations",              "Kullanıcı anket katılımları"),
 
     # ── Model field verbose_name ─────────────────────────────────────────
     ("title",                                   "Başlık"),
@@ -159,6 +163,8 @@ translations = [
     ("Date Settings (Scheduling)",              "Tarih Ayarları (Zamanlama)"),
     ("The end date is optional. If left empty, the survey will run indefinitely.",
                                                 "Bitiş tarihi isteğe bağlıdır. Boş bırakılırsa anket süresiz olarak çalışacaktır."),
+    ("You have already completed this survey.", "Bu anketi zaten tamamladınız."),
+    ("You have successfully completed the survey.", "Anketi başarıyla tamamladınız."),
 ]
 
 # ─── Turkish .po / .mo ────────────────────────────────────────────────────

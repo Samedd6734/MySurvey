@@ -9,7 +9,10 @@ urlpatterns = [
     path("survey/<int:survey_id>/", views.survey_question, name="survey_start"),
     path("survey/<int:survey_id>/question/<int:question_id>/", views.survey_question, name="survey_question"),
     path("survey/<int:survey_id>/question/<int:question_id>/vote/", views.survey_vote, name="survey_vote"),
+    # /polls/survey/<id>/results/
     path("survey/<int:survey_id>/results/", views.survey_results, name="survey_results"),
+    # /polls/survey/<id>/finish/
+    path("survey/<int:survey_id>/finish/", views.survey_finish, name="survey_finish"),
 
     # ── Auth ──
     path("register/", views.register_view, name="register"),

@@ -71,6 +71,18 @@ msgstr "log entry"
 msgid "log entries"
 msgstr "log entries"
 
+msgid "user vote"
+msgstr "user vote"
+
+msgid "user votes"
+msgstr "user votes"
+
+msgid "user survey participation"
+msgstr "user survey participation"
+
+msgid "user survey participations"
+msgstr "user survey participations"
+
 msgid "title"
 msgstr "title"
 
@@ -363,3 +375,9 @@ msgid ""
 "The end date is optional. If left empty, the survey will run indefinitely."
 msgstr ""
 "The end date is optional. If left empty, the survey will run indefinitely."
+
+msgid "You have already completed this survey."
+msgstr "You have already completed this survey."
+
+msgid "You have successfully completed the survey."
+msgstr "You have successfully completed the survey."

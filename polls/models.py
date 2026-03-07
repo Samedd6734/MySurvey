@@ -87,3 +87,32 @@ class Choice(models.Model):
 
     def __str__(self):
         return self.choice_text
+
+
+class UserVote(models.Model):
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE, verbose_name=_("user"))
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name=_("question"))
+    choice = models.ForeignKey(Choice, on_delete=models.CASCADE, verbose_name=_("choice"))
+    updated_at = models.DateTimeField(auto_now=True, verbose_name=_("updated at"))
+
+    class Meta:
+        unique_together = ('user', 'question')
+        verbose_name = _("user vote")
+        verbose_name_plural = _("user votes")
+
+    def __str__(self):
+        return f"{self.user.username} - {self.question.question_text}"
+
+
+class UserSurveyParticipation(models.Model):
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE, verbose_name=_("user"))
+    survey = models.ForeignKey(Survey, on_delete=models.CASCADE, verbose_name=_("survey"))
+    completed_at = models.DateTimeField(auto_now_add=True, verbose_name=_("completed at"))
+
+    class Meta:
+        unique_together = ('user', 'survey')
+        verbose_name = _("user survey participation")
+        verbose_name_plural = _("user survey participations")
+
+    def __str__(self):
+        return f"{self.user.username} - {self.survey.title} (Completed)"

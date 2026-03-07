@@ -71,6 +71,18 @@ msgstr "Günlük kaydı"
 msgid "log entries"
 msgstr "Günlük kayıtları"
 
+msgid "user vote"
+msgstr "Kullanıcı oyu"
+
+msgid "user votes"
+msgstr "Kullanıcı oyları"
+
+msgid "user survey participation"
+msgstr "Kullanıcı anket katılımı"
+
+msgid "user survey participations"
+msgstr "Kullanıcı anket katılımları"
+
 msgid "title"
 msgstr "Başlık"
 
@@ -364,3 +376,9 @@ msgid ""
 msgstr ""
 "Bitiş tarihi isteğe bağlıdır. Boş bırakılırsa anket süresiz olarak "
 "çalışacaktır."
+
+msgid "You have already completed this survey."
+msgstr "Bu anketi zaten tamamladınız."
+
+msgid "You have successfully completed the survey."
+msgstr "Anketi başarıyla tamamladınız."

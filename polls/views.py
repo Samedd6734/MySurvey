@@ -11,7 +11,11 @@ from django.utils import timezone
 from django.views import generic
 
 from django.utils.translation import gettext_lazy as _
-from .models import Choice, Question, Survey
+from .models import Choice, Question, Survey, UserVote, UserSurveyParticipation
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
+from django.db import transaction
+from django.contrib import messages
 
 
 # ─────────────────────────────────────────────
@@ -53,8 +57,14 @@ class SurveyListView(generic.ListView):
 # Survey Question View (with next/prev)
 # ─────────────────────────────────────────────
 
+@login_required
 def survey_question(request, survey_id, question_id=None):
     survey = get_object_or_404(Survey, pk=survey_id)
+
+    if UserSurveyParticipation.objects.filter(user=request.user, survey=survey).exists():
+        messages.warning(request, _("You have already completed this survey."))
+        return HttpResponseRedirect(reverse("polls:survey_results", args=(survey.id,)))
+
     questions = list(survey.questions.all())
 
     if not questions:
@@ -74,6 +84,9 @@ def survey_question(request, survey_id, question_id=None):
     q_num = idx + 1
     q_total = len(questions)
 
+    user_vote = UserVote.objects.filter(user=request.user, question=question).first()
+    selected_choice_id = user_vote.choice.id if user_vote else None
+
     return render(request, "polls/detail.html", {
         "survey": survey,
         "question": question,
@@ -81,6 +94,7 @@ def survey_question(request, survey_id, question_id=None):
         "next_q": next_q,
         "q_num": q_num,
         "q_total": q_total,
+        "selected_choice_id": selected_choice_id,
     })
 
 
@@ -88,9 +102,15 @@ def survey_question(request, survey_id, question_id=None):
 # Vote
 # ─────────────────────────────────────────────
 
+@login_required
 def survey_vote(request, survey_id, question_id):
     survey = get_object_or_404(Survey, pk=survey_id)
     question = get_object_or_404(Question, pk=question_id, survey=survey)
+
+    if UserSurveyParticipation.objects.filter(user=request.user, survey=survey).exists():
+        messages.warning(request, _("You have already completed this survey."))
+        return HttpResponseRedirect(reverse("polls:survey_results", args=(survey.id,)))
+
     questions = list(survey.questions.all())
     idx = questions.index(question)
 
@@ -124,8 +144,17 @@ def survey_vote(request, survey_id, question_id):
             "error_message": _("You didn't select a choice."),
         })
 
-    selected_choice.votes = F("votes") + 1
-    selected_choice.save()
+    with transaction.atomic():
+        user_vote = UserVote.objects.filter(user=request.user, question=question).first()
+        if user_vote:
+            if user_vote.choice != selected_choice:
+                Choice.objects.filter(pk=user_vote.choice.pk).update(votes=F("votes") - 1)
+                Choice.objects.filter(pk=selected_choice.pk).update(votes=F("votes") + 1)
+                user_vote.choice = selected_choice
+                user_vote.save()
+        else:
+            Choice.objects.filter(pk=selected_choice.pk).update(votes=F("votes") + 1)
+            UserVote.objects.create(user=request.user, question=question, choice=selected_choice)
 
     # Go to next question, or results if this was the last
     if idx < len(questions) - 1:
@@ -142,8 +171,10 @@ def survey_vote(request, survey_id, question_id):
 # Survey Results
 # ─────────────────────────────────────────────
 
+@login_required
 def survey_results(request, survey_id):
     survey = get_object_or_404(Survey, pk=survey_id)
+    has_completed = UserSurveyParticipation.objects.filter(user=request.user, survey=survey).exists()
     questions_data = []
     for question in survey.questions.all():
         total = question.total_votes
@@ -174,7 +205,17 @@ def survey_results(request, survey_id):
     return render(request, "polls/results.html", {
         "survey": survey,
         "questions_data": questions_data,
+        "has_completed": has_completed,
     })
+
+@login_required
+@require_POST
+def survey_finish(request, survey_id):
+    survey = get_object_or_404(Survey, pk=survey_id)
+    UserSurveyParticipation.objects.get_or_create(user=request.user, survey=survey)
+    messages.success(request, _("You have successfully completed the survey."))
+    return HttpResponseRedirect(reverse("polls:survey_results", args=(survey.id,)))
+
 
 
 # ─────────────────────────────────────────────

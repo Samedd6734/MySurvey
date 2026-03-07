@@ -71,6 +71,7 @@
                 <label class="choice-label flex items-center gap-4 p-4 rounded-xl border {{ survey.is_expired|yesno:'cursor-not-allowed opacity-60 bg-slate-800/20,cursor-pointer group glow-border' }}">
                     <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}"
                         {{ survey.is_expired|yesno:'disabled,' }}
+                        {% if selected_choice_id == choice.id %}checked{% endif %}
                         class="w-5 h-5 text-sky-500 border-2 border-slate-600 focus:ring-sky-500/50 disabled:text-slate-500 disabled:border-slate-500"
                         style="accent-color: #0EA5E9;">
                     <span class="text-base font-medium text-slate-100 {{ survey.is_expired|yesno:',group-hover:text-sky-300 transition-colors' }}">
