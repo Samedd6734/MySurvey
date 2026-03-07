@@ -23,3 +23,8 @@ venv.bak/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Custom Scripts
+seed_surveys.py
+compile_translations.py
+temp_seed.py
