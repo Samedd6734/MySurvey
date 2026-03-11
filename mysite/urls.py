@@ -1,3 +1,4 @@
+from django.views.generic import RedirectView
 from django.contrib import admin
 from django.urls import include, path
 from django.contrib.admin.models import LogEntry
@@ -24,6 +25,7 @@ def delete_action(request, pk):
 
 
 urlpatterns = [
+    path("", RedirectView.as_view(url='/polls/', permanent=True)),
     path('i18n/', include('django.conf.urls.i18n')),
     path("admin/", admin.site.urls),
     path("polls/", include("polls.urls")),
