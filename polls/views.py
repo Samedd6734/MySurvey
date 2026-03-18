@@ -59,7 +59,7 @@ class SurveyListView(generic.ListView):
             Q(end_date__isnull=True) | Q(end_date__gt=now)
         ).count()
         context["total_users"] = User.objects.count()
-        context["total_votes"] = Choice.objects.aggregate(s=Sum("votes"))["s"] or 0
+        context["total_completions"] = UserSurveyParticipation.objects.count()
         return context
 
 
